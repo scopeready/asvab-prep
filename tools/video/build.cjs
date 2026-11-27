@@ -4,6 +4,7 @@
    Voice: one narration clip per scene in <voDir>/<video id>-<scene number>.mp3 (made with text-to-speech from the `say` lines in scripts.js).
    Each scene stays on screen for as long as its narration lasts, plus a short pause.
    Usage: node tools/video/build.cjs <voDir> [ids]        Needs: playwright, ffmpeg.
+   Preview the pictures without any narration: STILLS=<outDir> node tools/video/build.cjs - [ids]   (writes one PNG per scene, changes nothing else)
    Output: math/video/<id>.mp4 + <id>.jpg, and math/lessons/videos.js (tells the app which lessons have a video). */
 const { chromium } = require(process.env.PW || 'playwright');
 const { execFileSync } = require('child_process'), fs = require('fs'), path = require('path'), os = require('os');
@@ -34,6 +35,7 @@ const page = (css, viz, scripts) => `<!doctype html><html><head><meta charset="u
   const made = [];
   for (const [id, n] of Object.entries(videos)) {
     if (only && !only.includes(id)) continue;
+    if (process.env.STILLS) { fs.mkdirSync(process.env.STILLS, { recursive: true }); for (let k = 0; k < n; k++) { await pg.evaluate(([i, j]) => window.show(i, j), [id, k]); await pg.screenshot({ path: path.join(process.env.STILLS, `${id}-${k + 1}.png`) }); } console.log(`${id}: ${n} stills`); continue; }
     const parts = []; let total = 0;
     for (let k = 0; k < n; k++) {
       const vo = path.join(voDir, `${id}-${k + 1}.mp3`); if (!fs.existsSync(vo)) throw new Error('missing narration ' + vo);
@@ -48,7 +50,7 @@ const page = (css, viz, scripts) => `<!doctype html><html><head><meta charset="u
     ff(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', path.join(out, id + '.mp4')]);
     made.push(id); console.log(`${id}: ${n} scenes, ${Math.round(total)} s, ${(fs.statSync(path.join(out, id + '.mp4')).size / 1024).toFixed(0)} KB`);
   }
-  await browser.close();
+  await browser.close(); if (process.env.STILLS) return;
   const have = fs.readdirSync(out).filter((f) => f.endsWith('.mp4')).map((f) => f.replace('.mp4', '')).sort();
   fs.writeFileSync(path.join(root, 'math', 'lessons', 'videos.js'), `/* Written by tools/video/build.cjs: the lessons that open with a short narrated video. */\nfor (const id of ${JSON.stringify(have)}) if (window.LESSONS && LESSONS[id]) { LESSONS[id].video = 'video/' + id + '.mp4'; LESSONS[id].poster = 'video/' + id + '.jpg'; }\n`);
 })().catch((e) => { console.error('FAILED:', e.message); process.exit(1); });

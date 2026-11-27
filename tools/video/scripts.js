@@ -67,5 +67,29 @@ window.VIDEOS = {
     { cap: 'What percent is 15 of 60?', fig: V.pbar(25, { whole: 60 }) + V.eq([[`${fr(15, 60)} = ${fr(1, 4)} = 0.25`, 'part ÷ whole'], ['0.25 = 25%', 'move the point 2 places right']]), say: 'What percent is 15 of 60? Divide the part by the whole. 15 over 60 is 0.25, which is 25 percent.' },
     { cap: 'Finding the whole', fig: V.tbl([['20%', '8'], ['10%', '4'], ['100%', '40']], ['percent', 'amount']), say: 'To find the whole, build up to 100 percent. If 20 percent is 8, then 10 percent is 4, and 100 percent is 40.' },
   ] },
+  ratio: { title: 'Ratios & Proportions', scenes: [
+    { cap: 'A ratio compares two amounts', fig: V.dots(1, 6) + V.dots(1, 4), say: 'A ratio compares two amounts. A class has 6 girls and 4 boys. The ratio of girls to boys is 6 to 4.' },
+    { cap: 'Order matters', fig: V.tbl([['girls to boys', '6 : 4'], ['boys to girls', '4 : 6']], ['the question asks', 'ratio']), say: 'Order matters. Girls were named first, so 6 comes first. Boys to girls would be 4 to 6.' },
+    { cap: 'Simplify a ratio like a fraction', fig: V.eq([['6 : 4'], ['= 3 : 2', 'divide both by 2']]), say: 'Simplify a ratio like a fraction. Divide both numbers by 2. 6 to 4 becomes 3 to 2. That is 3 girls for every 2 boys.' },
+    { cap: 'Splitting a total: count the parts', fig: V.groups(20, 4), say: 'A shelter has 20 cats and dogs, in a ratio of 2 to 3. 2 parts plus 3 parts is 5 parts. 20 divided by 5 is 4, so one part is 4 animals.' },
+    { cap: 'Give each group its parts', fig: V.tbl([['cats', '2', '2 × 4 = 8'], ['dogs', '3', '3 × 4 = 12'], ['total', '5', '20']], ['', 'parts', 'animals']), say: 'Cats get 2 parts. 2 times 4 is 8 cats. Dogs get 3 parts. 3 times 4 is 12 dogs. Check: 8 plus 12 is 20.' },
+    { cap: 'Proportion: find the cost of 1', fig: V.tbl([['3', '$6'], ['1', '$2'], ['7', '$14']], ['notebooks', 'cost']), say: 'For a proportion, find the amount for one. If 3 notebooks cost 6 dollars, one costs 2 dollars. So 7 notebooks cost 7 times 2, which is 14 dollars.' },
+  ] },
+  equation: { title: 'Solving Equations', scenes: [
+    { cap: 'An equation is a balance', fig: V.balance('x + 3', '8'), say: 'An equation says two sides are equal, like a level scale. Here, x plus 3 weighs the same as 8.' },
+    { cap: 'Do the same to both sides', fig: V.eq([['<i>x</i> + 3 = 8'], ['<i>x</i> + 3 − 3 = 8 − 3', 'subtract 3 from both sides'], ['<i>x</i> = 5', '<i>x</i> is alone']]) + V.balance('x', '5'), say: 'To keep the scale level, do the same thing to both sides. Take 3 away from each side. Now x is alone, and x equals 5.' },
+    { cap: 'Undo with the opposite', fig: V.tbl([['<i>x</i> + 4 = 9', 'subtract 4', '<i>x</i> = 5'], ['<i>x</i> − 4 = 9', 'add 4', '<i>x</i> = 13'], ['4<i>x</i> = 20', 'divide by 4', '<i>x</i> = 5']], ['equation', 'do to both sides', 'answer']), say: 'To get x alone, undo what was done to it. Subtracting undoes adding. Dividing undoes multiplying.' },
+    { cap: 'Two steps: undo the last thing first', fig: V.eq([['2<i>x</i> + 3 = 11'], ['2<i>x</i> = 8', 'subtract 3 from both sides']]), say: 'Here, x was multiplied by 2, and then 3 was added. Undo the last thing first. Subtract 3 from both sides. That leaves 2 x equals 8.' },
+    { cap: 'Then divide', fig: V.eq([['2<i>x</i> + 3 = 11'], ['2<i>x</i> = 8', 'subtract 3 from both sides'], ['<i>x</i> = 4', 'divide both sides by 2']]), say: 'Then divide both sides by 2. 8 divided by 2 is 4. So x equals 4.' },
+    { cap: 'Check: put your answer back in', fig: V.eq([['2<i>x</i> + 3 = 11'], ['2(4) + 3', 'put 4 in for <i>x</i>'], ['8 + 3 = 11 ✓', 'both sides match']]), say: 'Check by putting 4 back in. 2 times 4 is 8, and 8 plus 3 is 11. Both sides match, so the answer is right.' },
+  ] },
+  area: { title: 'Perimeter & Area', scenes: [
+    { cap: 'Perimeter: walking around the edge', fig: V.rect(5, 3, { unit: 'ft', inside: 'walk around the edge' }), say: 'Perimeter is the distance around a shape, like walking the fence line of a yard. Add every side. 5 plus 3 plus 5 plus 3 is 16 feet.' },
+    { cap: 'Area: covering the inside', fig: V.dots(3, 5), say: 'Area counts the squares that cover the inside. Picture each dot as one square tile. This yard holds 3 rows of 5 tiles. That is 15 tiles.' },
+    { cap: 'Rectangle: length × width', fig: V.rect(5, 3, { unit: 'ft', inside: '5 × 3 = 15 sq ft' }), say: 'So the area of a rectangle is length times width. 5 times 3 is 15 square feet.' },
+    { cap: 'A triangle is half a rectangle', fig: V.tri(8, 5), say: 'A triangle is half of a rectangle. So its area is half of base times height. 8 times 5 is 40, and half of 40 is 20 square feet.' },
+    { cap: 'Missing side: work backward', fig: V.rect(8, 5, { top: '8 ft', side: '? ft', inside: 'area = 40 sq ft' }) + V.eq([['40 ÷ 8 = 5', 'width = area ÷ length']]), say: 'Sometimes the area is given and a side is missing. Area came from multiplying, so undo it by dividing. 40 divided by 8 is 5 feet.' },
+    { cap: 'Around or inside?', fig: V.tbl([['fence, border, frame', 'perimeter', 'feet'], ['carpet, paint, grass', 'area', 'square feet']], ['the question says', 'find', 'units']), say: 'Read what the question wants. A fence or a border goes around. That is perimeter. Carpet or paint covers the inside. That is area, in square feet.' },
+  ] },
 };
 if (typeof module !== 'undefined') module.exports = window.VIDEOS;

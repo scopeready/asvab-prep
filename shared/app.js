@@ -1,4 +1,4 @@
-/* ASVAB Prep — shared app engine (v2), used by ASVAB Math and ASVAB English.
+/* ASVAB Prep — shared app engine (v2), used by ASVAB Math, ASVAB English and ASVAB Science & Tech.
    Level flow: Learn (picture lesson with checks) → Do it together (guided steps) or Flashcards → Practice → Level Check.
    Plus: daily warm-up (spaced review), fix-my-mistakes, read-aloud, timed tests, readiness score.
    Progress is stored on this device (localStorage), so everything works offline. */
@@ -71,11 +71,12 @@ function readiness() {
   return out;
 }
 function band(v) {
-  if (v >= 90) return ['Ready to pass with ease', 'great'];
-  if (v >= 75) return ['Strong: likely to pass comfortably', 'good'];
-  if (v >= 60) return ['On track to pass', 'ok'];
-  if (v >= 40) return ['Getting closer', 'warn'];
-  return ['Building the foundation', 'low'];
+  const B = CFG.bands || ['Ready to pass with ease', 'Strong: likely to pass comfortably', 'On track to pass', 'Getting closer', 'Building the foundation'];
+  if (v >= 90) return [B[0], 'great'];
+  if (v >= 75) return [B[1], 'good'];
+  if (v >= 60) return [B[2], 'ok'];
+  if (v >= 40) return [B[3], 'warn'];
+  return [B[4], 'low'];
 }
 
 // ---------- read aloud ----------
@@ -168,7 +169,7 @@ function viewWho() {
     <div class="card"><h3>${ps.length ? 'Add someone new' : 'What\'s your first name?'}</h3>
     <input type="text" id="nm" maxlength="24" placeholder="First name" autocomplete="given-name">
     <button class="btn gold" data-act="addp">Start learning</button></div>
-    ${ps.length ? '' : `<div class="card info small"><b>How it works:</b> you start with the basics. Each level teaches one skill with pictures, one small step at a time. Then you solve problems together with the app, practice on your own, and pass a short Level Check to unlock the next level. Your score shows how close you are to passing the ASVAB ${SUBJ} sections.</div>`}
+    ${ps.length ? '' : `<div class="card info small">${CFG.introHTML || `<b>How it works:</b> you start with the basics. Each level teaches one skill with pictures, one small step at a time. Then you solve problems together with the app, practice on your own, and pass a short Level Check to unlock the next level. Your score shows how close you are to passing the ASVAB ${SUBJ} sections.`}</div>`}
   </main>`;
   const nm = document.getElementById('nm'); if (nm) nm.addEventListener('keydown', (e) => { if (e.key === 'Enter') ACT.addp(); });
 }
@@ -444,11 +445,11 @@ function viewScore() {
   const weak = LEVELS.filter((l) => !l.checkpoint && (lvOf(l.id) || {}).passed).map((l) => { const lv = lvOf(l.id); const acc = lv.recent.length ? lv.recent.reduce((a, c) => a + c, 0) / lv.recent.length : lv.best; return { l, acc }; }).sort((a, c) => a.acc - c.acc).slice(0, 3).filter((w) => w.acc < 0.9);
   const row = (a, b) => `<div class="row"><div class="grow">${a}</div><b>${b}</b></div>`;
   page(`<h1>${esc(p.name)}'s score</h1>
-    <div class="card row">${ring(r.overall, 'light big')}<div class="grow"><h3>${SUBJ} readiness</h3><span class="pill ${bc}">${bl}</span><p class="small muted">An estimate of how ready you are for the two ASVAB ${SUBJ} sections, based on the levels you've passed, your recent accuracy and your timed practice tests.</p></div></div>
+    <div class="card row">${ring(r.overall, 'light big')}<div class="grow"><h3>${SUBJ} readiness</h3><span class="pill ${bc}">${bl}</span><p class="small muted">An estimate of how ready you are for the ${SECS.length === 2 ? 'two' : SECS.length} ASVAB ${SUBJ} sections, based on the levels you've passed, your recent accuracy and your timed practice tests.</p></div></div>
     ${SECS.map((k) => sec(k, CFG.sections[k])).join('')}
     <div class="card">${row('Levels passed', `${passed} / ${LEVELS.length}`)}${nCards ? row('Flashcards learned', nCards) : ''}${row('Questions answered', p.answered)}${row('Accuracy overall', (p.answered ? Math.round(p.correct / p.answered * 100) : 0) + '%')}${row('Practice streak', `${streak()} day${streak() === 1 ? '' : 's'}`)}${row('Mistakes waiting to be fixed', p.missed.length)}</div>
     ${weak.length ? `<h2>Weak spots to review</h2>${weak.map((w) => `<button class="lvl" data-act="go" data-to="#/practice/${w.l.id}"><span class="ic">!</span><span class="grow"><span class="t">${w.l.title}</span><br><span class="s">Recent accuracy ${Math.round(w.acc * 100)}% · tap to practice</span></span></button>`).join('')}` : ''}
-    <h2>What "passing" means</h2><div class="card small">${CFG.passingHTML}<p class="muted">This is a study estimate, not an official score. Only the real ASVAB gives an official AFQT.</p></div>`, 'My score');
+    <h2>${CFG.passingTitle || 'What "passing" means'}</h2><div class="card small">${CFG.passingHTML}<p class="muted">This is a study estimate, not an official score. Only the real ASVAB gives an official AFQT.</p></div>`, 'My score');
 }
 
 // ---------- settings ----------
@@ -461,7 +462,7 @@ function viewSettings() {
       ? '<p class="small">In Safari, tap the <b>Share</b> button, then <b>Add to Home Screen</b>. Open it from the home screen icon and it works with no internet.</p>'
       : `<p class="small">Install it as an app so it opens from your home screen and works with no internet.</p>${deferredInstall ? '<button class="btn gold" data-act="install">Install the app</button>' : '<p class="small muted">In Chrome, open the ⋮ menu and choose <b>Install app</b> or <b>Add to Home screen</b>.</p>'}`}
       <p class="small muted">Once you've opened it one time with internet, everything works offline${CFG.hasVideo ? ', including the videos' : ''}.</p></div>
-    <div class="card"><h3>${CFG.otherApp.name}</h3><p class="small">The other half of the AFQT. Same layout, its own progress.</p><a class="btn ghost sm" href="${CFG.otherApp.url}">Open ${CFG.otherApp.name}</a></div>
+    ${(CFG.otherApps || [CFG.otherApp]).map((o) => `<div class="card"><h3>${o.name}</h3><p class="small">${o.note || 'The other half of the AFQT.'} Same layout, its own progress.</p><a class="btn ghost sm" href="${o.url}">Open ${o.name}</a></div>`).join('')}
     <div class="card"><h3>Share this app</h3><p class="small">Send the link to someone else who is studying. Their progress stays on their own device.</p><button class="btn ghost sm" data-act="share">Share the link</button></div>
     <div class="card"><h3>Back up progress</h3><p class="small">Progress is saved on this device only. Save a backup file before switching phones or clearing your browser.</p>
       <button class="btn ghost sm" data-act="backup">Save a backup file</button> <label class="btn ghost sm" style="display:inline-flex">Restore from a file<input type="file" accept="application/json,.json" id="restore" hidden></label></div>

@@ -199,3 +199,4 @@ ol.steps li.cur { border: 2px solid var(--gold); font-size: 19px; }
 .flash .fx { font-size: 16px; color: var(--muted); line-height: 1.5; }
 .flash .fhint { font-size: 15px; color: var(--muted); margin-top: 14px; }
 mark { background: var(--gold-soft); color: inherit; padding: 0 3px; border-radius: 4px; font-weight: 700; }
+.vcap { text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 2px; }

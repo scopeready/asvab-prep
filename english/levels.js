@@ -242,7 +242,7 @@ const TESTS = {
 
 const CFG = {
   app: 'ASVAB English', key: 'asvabEnglish.v1', sections: { WK: 'Word Knowledge', PC: 'Paragraph Comprehension' }, guided: false, hasVideo: false,
-  otherApp: { name: 'ASVAB Math', url: 'https://asvab-math.vercel.app' },
+  otherApps: [{ name: 'ASVAB Math', url: 'https://asvab-math.vercel.app', note: 'Arithmetic Reasoning and Mathematics Knowledge: the other half of the AFQT.' }, { name: 'ASVAB Science & Tech', url: 'https://asvab-science.vercel.app', note: 'General Science, Electronics, Auto, Shop and Mechanical: the sections that decide which jobs you can get.' }],
   practiceHint: 'Read every choice before you pick. On the real test you cannot go back.',
   testRules: ['Like the computer ASVAB, you can\'t go back to change an answer.', 'Word Knowledge is fast: 36 seconds a question. Do not get stuck on one word.'],
   passingHTML: `<p>The ASVAB score the military uses to decide if you can enlist is the <b>AFQT</b>. It is built from four sections: the two English sections here, <b>Word Knowledge</b> and <b>Paragraph Comprehension</b> (combined into a Verbal score that counts <b>double</b>), plus two math sections (Arithmetic Reasoning and Mathematics Knowledge). Because English counts double, it is half of your AFQT.</p>

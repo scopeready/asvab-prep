@@ -1,0 +1,42 @@
+// Validates the fact banks of a fact-based app (tools/BANK-SPEC.md). Usage: node tests/bank-check.cjs science [level,ids]
+const fs = require('fs'), vm = require('vm'), path = require('path');
+const app = process.argv[2] || 'science', only = process.argv[3] ? process.argv[3].split(',') : null, dir = path.join(__dirname, '..', app, 'data');
+const ctx = { console, Math }; ctx.window = ctx; vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '../shared/viz.js'), 'utf8'), ctx);
+for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js')).sort()) vm.runInContext(fs.readFileSync(path.join(dir, f), 'utf8'), ctx, { filename: f });
+const ST = ctx.ST || {}; let bad = 0; const err = (m) => { bad++; if (bad <= 60) console.log('  ✗ ' + m); };
+const text = (h) => String(h).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(), words = (h) => text(h).split(' ').filter(Boolean).length;
+const junk = (h) => /undefined|NaN|\[object/.test(String(h));
+for (const [id, b] of Object.entries(ST)) {
+  if (only && !only.includes(id)) continue;
+  const facts = b.facts || [], qs = b.qs || []; let longest = 0, shortest = 0; const pos = [0, 0, 0, 0];
+  if (facts.length < 14 || facts.length > 18) err(`${id}: ${facts.length} flashcards (needs 14 to 18)`);
+  if (qs.length < 26 || qs.length > 30) err(`${id}: ${qs.length} questions (needs 26 to 30)`);
+  const terms = new Set(), means = new Set();
+  facts.forEach((f, k) => { const [t, m, ex] = f, w = `${id} card ${k + 1} "${t}"`;
+    if (!t || !m) return err(`${w}: needs a term and a meaning`);
+    if (words(t) > 4) err(`${w}: term over 4 words`); if (words(m) > 14) err(`${w}: meaning is ${words(m)} words (max 14)`); if (ex && words(ex) > 14) err(`${w}: example over 14 words`);
+    if (/\.$/.test(m)) err(`${w}: meaning ends with a period`);
+    if (text(m).toLowerCase().includes(text(t).toLowerCase())) err(`${w}: the meaning contains the term`);
+    if (terms.has(t.toLowerCase())) err(`${w}: duplicate term`); if (means.has(m.toLowerCase())) err(`${w}: duplicate meaning`); terms.add(t.toLowerCase()); means.add(m.toLowerCase());
+    if (junk(t + m + (ex || ''))) err(`${w}: bad text`); });
+  const seen = new Set();
+  qs.forEach((q, k) => { const w = `${id} q${k + 1}`;
+    if (!q.q || !Array.isArray(q.c) || q.c.length !== 4) return err(`${w}: needs q and 4 choices`);
+    if (new Set(q.c.map((c) => text(c).toLowerCase())).size !== 4) err(`${w}: choices are not all different`);
+    if (!(Number.isInteger(q.a) && q.a >= 0 && q.a < 4)) return err(`${w}: a must be 0 to 3`);
+    if (!q.why || words(q.why) > 40) err(`${w}: why missing or over 40 words`); if (words(q.q) > 40) err(`${w}: question over 40 words`);
+    q.c.forEach((c) => { if (words(c) > 14) err(`${w}: choice over 14 words: ${text(c)}`); if (/\b(all|none) of the above\b|\bboth [A-D] and [A-D]\b/i.test(c)) err(`${w}: "all/none of the above" style choice`); });
+    if (/\b(first|second|third|fourth|last) (choice|option|answer)\b|\b(choice|option) [A-D]\b/i.test(q.why)) err(`${w}: why names a choice by position`);
+    if (q.d != null && ![1, 2, 3].includes(q.d)) err(`${w}: d must be 1, 2 or 3`);
+    if (junk(q.q + q.c.join('') + q.why) || (q.fig != null && (typeof q.fig !== 'string' || junk(q.fig)))) err(`${w}: bad text or picture`);
+    const key = text(q.q).toLowerCase(); if (seen.has(key)) err(`${w}: duplicate question`); seen.add(key);
+    const len = q.c.map((c) => text(c).length), L = len[q.a]; if (len.every((x, i) => i === q.a || x < L)) longest++; if (len.every((x, i) => i === q.a || x > L)) shortest++; pos[q.a]++; });
+  const pct = (n) => Math.round(n / Math.max(1, qs.length) * 100);
+  console.log(`${id}: ${facts.length} cards, ${qs.length} questions | key single longest ${pct(longest)}%, single shortest ${pct(shortest)}% | key position ${pos.join('/')}`);
+  if (pct(longest) > 34) err(`${id}: the right answer is the single longest choice in ${pct(longest)}% of questions (limit 34%)`);
+  if (pct(shortest) > 34) err(`${id}: the right answer is the single shortest choice in ${pct(shortest)}% of questions (limit 34%)`);
+  if (qs.length >= 20 && Math.max(...pos) > qs.length * 0.4) err(`${id}: right answers bunch at one position (${pos.join('/')})`);
+}
+if (!Object.keys(ST).length) err('no banks found in ' + dir);
+console.log(bad ? `${bad} problem(s)` : 'ALL OK'); process.exit(bad ? 1 : 0);

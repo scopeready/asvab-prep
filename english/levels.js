@@ -65,6 +65,8 @@ const SYNONYMS = [
   ['abruptly', 'hastily', 'promptly'], ['nominally', 'ostensibly'], ['indiscriminately', 'haphazardly'], ['eschew', 'elude'], ['galvanize', 'instigate'],
   ['proliferate', 'augment', 'expand', 'bolster'], ['repudiate', 'refute', 'rescind'], ['fortuitous', 'auspicious'], ['vacuous', 'superficial', 'trivial'],
   ['impasse', 'dilemma', 'paradox'], ['nefarious', 'pernicious', 'noxious', 'deleterious'], ['soporific', 'tedious', 'mundane'], ['begrudgingly', 'ruthlessly', 'brusquely'],
+  ['eschew', 'repudiate', 'ostracize'], ['proliferate', 'disseminate'], ['obscure', 'tentative', 'trivial'], ['robust', 'exuberant', 'intense'], ['impasse', 'nadir', 'obstacle'],
+  ['vacuous', 'vacant', 'shallow'], ['fortuitous', 'spontaneous'], ['repudiate', 'decline'],
 ];
 const SYN = {}; SYNONYMS.forEach((g, i) => g.forEach((w) => (SYN[w] = SYN[w] || []).push(i)));
 const related = (a, c) => a !== c && (SYN[a] || []).some((i) => (SYN[c] || []).includes(i));

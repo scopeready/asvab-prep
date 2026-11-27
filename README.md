@@ -5,7 +5,7 @@ Two study apps for the ASVAB sections that make up the AFQT (the score that deci
 | App | Covers | Live |
 |---|---|---|
 | **ASVAB Math** (`math/`) | Arithmetic Reasoning and Mathematics Knowledge: 32 levels in 5 units, from adding whole numbers to algebra and geometry | https://asvab-math.vercel.app |
-| **ASVAB English** (`english/`) | Word Knowledge and Paragraph Comprehension: 477 flashcards (words and word parts), 5 reading levels | https://asvab-english.vercel.app |
+| **ASVAB English** (`english/`) | Word Knowledge and Paragraph Comprehension: 505 flashcards (420 words, 85 word parts), 5 reading levels | https://asvab-english.vercel.app |
 
 Both are plain HTML, CSS and JavaScript. There is no build step, no account and no server. Progress is saved on the learner's own device, and after one visit with internet the whole app (videos included) works offline. They install to a phone's home screen.
 

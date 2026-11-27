@@ -60,7 +60,11 @@ const SYNONYMS = [
   ['rebuke', 'reprimand', 'castigate', 'censure', 'denigrate', 'disparage'], ['ambiguous', 'tentative', 'dubious'], ['commend', 'endorse', 'extol', 'venerate'], ['adamantly', 'vehemently'],
   ['judicious', 'sagacious', 'erudite', 'circumspect', 'prudent'], ['cogent', 'lucid'], ['alacrity', 'zeal'], ['dearth', 'paucity'], ['belligerent', 'pugnacious', 'defiant'],
   ['capricious', 'mercurial', 'volatile'], ['cursory', 'perfunctory'], ['deleterious', 'noxious', 'pernicious'], ['garrulous', 'verbose'], ['imperturbable', 'placid'],
-  ['exonerate', 'vindicate'], ['spurious', 'tenuous'],
+  ['exonerate', 'vindicate', 'extricate'], ['spurious', 'tenuous'],
+  ['obscure', 'vague', 'ambiguous', 'equivocal', 'esoteric'], ['robust', 'durable', 'resilient'], ['versatile', 'capable', 'adept', 'adroit'], ['remnant', 'debris', 'surplus'],
+  ['abruptly', 'hastily', 'promptly'], ['nominally', 'ostensibly'], ['indiscriminately', 'haphazardly'], ['eschew', 'elude'], ['galvanize', 'instigate'],
+  ['proliferate', 'augment', 'expand', 'bolster'], ['repudiate', 'refute', 'rescind'], ['fortuitous', 'auspicious'], ['vacuous', 'superficial', 'trivial'],
+  ['impasse', 'dilemma', 'paradox'], ['nefarious', 'pernicious', 'noxious', 'deleterious'], ['soporific', 'tedious', 'mundane'], ['begrudgingly', 'ruthlessly', 'brusquely'],
 ];
 const SYN = {}; SYNONYMS.forEach((g, i) => g.forEach((w) => (SYN[w] = SYN[w] || []).push(i)));
 const related = (a, c) => a !== c && (SYN[a] || []).some((i) => (SYN[c] || []).includes(i));

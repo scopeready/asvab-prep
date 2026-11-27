@@ -140,7 +140,7 @@ window.ASVAB_EN_PC1 = [
       { type: "vocab", q: "As used in the passage, the word releases most nearly means", c: ["sets free from prison", "publishes for the public", "fires from a job", "gives off"], a: 3,
         why: ["Read the sentence: rain breaks down rocks, and 'This releases tiny amounts of minerals.'", "The rocks give off minerals as they break down.", "'Sets free from prison' and 'publishes' are other meanings of release that do not fit rocks."] },
       { type: "purpose", q: "The author's main purpose is to", c: ["warn readers not to drink seawater", "persuade readers to protect rivers", "describe the animals that live in the sea", "explain why ocean water is salty"], a: 3,
-        why: ["The passage opens with a question: 'How can both be true?'", "Everything after it explains the answer, step by step.", "Drinking seawater is never discussed, so there is no warning."] }
+        why: ["The passage asks a question near the start: 'How can both be true?'", "Everything after it explains the answer, step by step.", "Drinking seawater is never discussed, so there is no warning."] }
     ]
   },
   {

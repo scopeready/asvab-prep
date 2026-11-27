@@ -64,7 +64,7 @@ window.VIDEOS = {
     { cap: 'Percent to decimal', fig: V.tbl([['35%', '0.35'], ['50%', '0.50'], ['5%', '0.05'], ['120%', '1.20']], ['percent', 'decimal']), say: 'To turn a percent into a decimal, move the point two places to the left. 35 percent becomes 0.35.' },
     { cap: '"Of" means multiply', fig: V.pbar(20, { whole: 60 }), say: 'The word of means multiply. 20 percent of 60 is 0.20 times 60, which is 12.' },
     { cap: 'Shortcuts: 50%, 25% and 10%', fig: V.tbl([['50%', 'half', '30'], ['25%', 'divide by 4', '15'], ['10%', 'move the point 1 left', '6'], ['20%', '10% × 2', '12'], ['5%', 'half of 10%', '3']], ['percent', 'how', 'of 60']), say: 'Shortcuts save time. 50 percent is half. 25 percent is one fourth. For 10 percent, move the point one place to the left.' },
-    { cap: 'What percent is 15 of 60?', fig: V.pbar(25, { whole: 60 }) + V.eq([[`${fr(15, 60)} = ${fr(1, 4)} = 0.25`, 'part ÷ whole'], ['0.25 × 100 = 25%', 'move the point 2 places right']]), say: 'What percent is 15 of 60? Divide the part by the whole. 15 over 60 is 0.25, which is 25 percent.' },
+    { cap: 'What percent is 15 of 60?', fig: V.pbar(25, { whole: 60 }) + V.eq([[`${fr(15, 60)} = ${fr(1, 4)} = 0.25`, 'part ÷ whole'], ['0.25 = 25%', 'move the point 2 places right']]), say: 'What percent is 15 of 60? Divide the part by the whole. 15 over 60 is 0.25, which is 25 percent.' },
     { cap: 'Finding the whole', fig: V.tbl([['20%', '8'], ['10%', '4'], ['100%', '40']], ['percent', 'amount']), say: 'To find the whole, build up to 100 percent. If 20 percent is 8, then 10 percent is 4, and 100 percent is 40.' },
   ] },
 };

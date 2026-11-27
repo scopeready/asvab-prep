@@ -4,7 +4,7 @@ window.LESSONS = window.LESSONS || {};
 
 // ---------- Adding whole numbers ----------
 LESSONS.add = {
-  hook: 'Almost every ASVAB word problem ends with adding. With no calculator allowed, you need a method you can trust every time.',
+  hook: 'Almost every ASVAB word problem ends with arithmetic, and adding is where it starts. With no calculator allowed, you need a method you can trust every time.',
   cards: [
     { t: 'Every digit has a place',
       say: 'Each single number in 347 is called a digit. Where a digit sits tells you what it is worth. The 3 means 3 hundreds. The 4 means 4 tens. The 7 means 7 ones. When we add, we add ones to ones and tens to tens.',
@@ -32,7 +32,7 @@ LESSONS.add = {
       ask: { q: 'The tens column adds to 12. What do you do?', opts: ['Write 2, carry 1 to the hundreds', 'Write 12 under the tens', 'Write 1, carry 2 to the hundreds', 'Write 2 and carry nothing'], a: 0,
         why: '12 tens is 1 hundred and 2 tens, because 10 tens make 1 hundred. Write the 2 under the tens. Carry the 1 to the hundreds column.' } },
     { t: 'Last column: the hundreds',
-      say: 'Now the hundreds: 5 plus 7, plus the 1 we carried. This is the last column. So write the whole total, even if it has two digits.',
+      say: 'Now the hundreds: 5 plus 7, plus the 1 we carried from the tens. This is the last column. So write the whole total, even if it has two digits.',
       fig: V.stack(586, 742, '+', { show: 2, hi: 2, marks: false }),
       ask: { q: 'Hundreds column: 5 + 7 + 1 = ?', num: 13, why: '5 + 7 + 1 carried = 13. No columns are left, so write the whole 13. The answer is 1,328. Estimate to check: 600 + 700 = 1,300, which is close.' } },
     { t: 'Watch out', tip: true,
@@ -239,7 +239,7 @@ LESSONS.neg = {
       fig: V.eq([['−24 ÷ (−6)', ''], ['24 ÷ 6 = 4', 'divide the sizes'], ['4', 'same signs, so positive']]),
       ask: { q: 'What is 18 ÷ (−3)?', opts: ['−6', '6', '−15', '15'], a: 0, why: 'Divide the sizes: 18 ÷ 3 = 6. The signs are different, so the answer is negative: −6.' } },
     { t: 'Watch out', tip: true,
-      say: '"Two negatives make a positive" is only true for multiplying and dividing. When you add two negatives, the answer stays negative. Negative 3 plus negative 4 is negative 7, not 7.',
+      say: 'When you multiply or divide two negatives, the answer is positive. When you add two negatives, the answer stays negative. Negative 3 plus negative 4 is negative 7, not 7. Subtracting a negative is still adding.',
       fig: V.eq([['−3 + (−4) = −7', 'adding: stays negative'], ['(−3) × (−4) = 12', 'multiplying: turns positive']]) },
     { t: 'Remember',
       say: 'Adding: same signs, add the sizes. Different signs, subtract, and keep the sign of the bigger size.<br>Subtracting: add the opposite.<br>Multiplying and dividing: same signs positive, different signs negative.' },

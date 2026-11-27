@@ -1,6 +1,6 @@
 /* ASVAB English service worker: caches the whole app so it works with no internet.
    Bump VERSION on every release so phones pick up the new files. */
-const VERSION = 'asvab-english-v4';
+const VERSION = 'asvab-english-v5';
 const FILES = ["./","app.js","data/parts.js","data/pc1.js","data/pc2.js","data/pc3.js","data/words-t1.js","data/words-t2.js","data/words-t3.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","index.html","lessons/all.js","levels.js","manifest.webmanifest","styles.css","viz.js"];
 const MEDIA = []; // lesson videos: cached in the background, one at a time, so a slow connection never blocks the app
 

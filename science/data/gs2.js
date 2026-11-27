@@ -7,7 +7,7 @@ window.ST = window.ST || {};
 ST.earth = {
   facts: [
     ['crust', 'the thin, solid outer layer of Earth that we live on'],
-    ['mantle', 'the thick layer of hot rock between the outer shell and the center', 'the thickest layer of Earth'],
+    ['mantle', 'the thick layer of hot rock between the outer shell and the center', 'it makes up most of Earth\'s volume'],
     ['core', 'the very hot center of Earth, made mostly of iron and nickel'],
     ['igneous rock', 'stone formed when melted material cools and hardens', 'granite, basalt'],
     ['sedimentary rock', 'stone formed from sand, mud or shells pressed together in layers', 'sandstone, limestone'],

@@ -78,7 +78,7 @@ LESSONS.body = {
       say: 'The brain and spinal cord send signals through nerves. Bones hold you up and protect soft organs. Muscles pull on bones to move you. A tendon ties a muscle to a bone. A ligament ties a bone to a bone.',
       fig: V.tbl([['Tendon', 'muscle to bone'], ['Ligament', 'bone to bone']], ['tissue', 'connects']) },
     { t: 'Nutrients: what food gives you',
-      say: 'Food holds five kinds of nutrients. Carbohydrates are quick fuel. Proteins build and repair the body. Fats store energy. Vitamins and minerals are needed in small amounts to keep the body working.',
+      say: 'Food holds several kinds of nutrients. Carbohydrates are quick fuel. Proteins build and repair the body. Fats store energy. Vitamins and minerals are needed in small amounts to keep the body working.',
       fig: V.tbl([['Carbohydrates', 'quick energy'], ['Proteins', 'build and repair'], ['Fats', 'stored energy'], ['Vitamins', 'help the body work right'], ['Minerals', 'calcium, iron and others']], ['nutrient', 'what it does']),
       ask: { q: 'Which nutrient mainly builds and repairs muscle?', opts: ['Carbohydrates', 'Fats', 'Vitamins', 'Proteins'], a: 3,
         why: 'Proteins are the building material for muscle and other tissue. Carbohydrates are the quick fuel, and fats store energy.' } },

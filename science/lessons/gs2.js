@@ -33,7 +33,7 @@ LESSONS.earth = {
         why: 'Condensation is a gas cooling into a liquid. Evaporation is the opposite, liquid turning into gas. Precipitation is water falling from the clouds.' } },
     { t: 'The air has layers too',
       say: 'The air around Earth is the <b>atmosphere</b>. It is mostly nitrogen, with about one fifth oxygen. The bottom layer is the <b>troposphere</b>. We live there, and almost all weather happens there. Above it, the stratosphere holds the ozone layer.',
-      fig: V.layers([['Thermosphere', 'highest, very thin air'], ['Mesosphere', 'meteors burn up here'], ['Stratosphere', 'holds the ozone layer'], ['Troposphere', 'we live here; weather']]) },
+      fig: V.layers([['Thermosphere', 'very high, very thin air'], ['Mesosphere', 'meteors burn up here'], ['Stratosphere', 'holds the ozone layer'], ['Troposphere', 'we live here; weather']]) },
     { t: 'Reading the weather',
       say: 'Air presses down on us. That push is <b>air pressure</b>, and a barometer measures it. High pressure usually brings fair weather. Low or falling pressure usually brings clouds and storms. A <b>front</b> is the line where warm air and cold air meet.',
       fig: V.tbl([['High pressure', 'fair, clear weather'], ['Low pressure', 'clouds and storms'], ['Cold front', 'storms, then cooler air'], ['Warm front', 'steady rain, then warmer']], ['Sign', 'Usually brings']),

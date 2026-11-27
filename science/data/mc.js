@@ -40,7 +40,7 @@ ST.force = {
       why: 'Inertia means moving things keep moving until a force stops them. The bus stopped, but the riders kept going.' },
     { q: 'A book sits still on a table. What does Newton\'s first law say it will do?',
       c: ['Slowly speed up by itself', 'Slide toward the table edge', 'Stay at rest until a force acts', 'Float up off the table'], a: 2,
-      why: 'Newton\'s first law: an object at rest stays at rest, and a moving object keeps moving, unless a force acts on it.' },
+      why: 'Newton\'s first law: an object at rest stays at rest unless a force acts on it.' },
     { q: 'You push an empty shopping cart and a full one with the same force. Which speeds up faster?',
       c: ['The full cart', 'They speed up the same', 'Neither one moves', 'The empty cart'], a: 3,
       why: 'With the same push, the object with less mass speeds up faster. This is Newton\'s second law.' },

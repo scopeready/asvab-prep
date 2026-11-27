@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASVAB English</title>
+<meta name="description" content="Learn ASVAB Word Knowledge and Paragraph Comprehension step by step. Works offline.">
+<meta name="theme-color" content="#13294B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ASVAB English">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" aria-live="polite"><p class="loading">Loading…</p></div>
+<noscript><p class="loading">ASVAB English needs JavaScript turned on.</p></noscript>
+<script src="viz.js"></script>
+<script src="data/words-t1.js"></script>
+<script src="data/words-t2.js"></script>
+<script src="data/words-t3.js"></script>
+<script src="data/parts.js"></script>
+<script src="data/pc1.js"></script>
+<script src="data/pc2.js"></script>
+<script src="data/pc3.js"></script>
+<script src="levels.js"></script>
+<script src="lessons/all.js"></script>
+<script src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
+</body>
+</html>

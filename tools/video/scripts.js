@@ -1,0 +1,71 @@
+/* One-minute lesson videos. Each scene is one picture, a short caption and one narration line.
+   The pictures are the same V drawings the lessons use, and every scene uses the lesson's own running example.
+   `say` is written to be heard: numbers and signs are spelled the way they should be spoken. */
+const fr = (n, d) => V.fr(n, d);
+window.VIDEOS = {
+  add: { title: 'Adding Whole Numbers', scenes: [
+    { cap: 'Line up the places', fig: V.stack(47, 38, '+', { ans: false, marks: false }), say: 'To add 47 and 38, write one number on top of the other. Ones go under ones. Tens go under tens.' },
+    { cap: 'Start on the right', fig: V.stack(47, 38, '+', { show: 1, hi: 0 }), say: 'Start on the right. 7 plus 8 is 15. A column holds only one digit, so write the 5 and carry the 1.' },
+    { cap: 'Why we carry', fig: V.eq([['7 + 8 = 15', 'the ones column'], ['15 = 1 ten + 5 ones', 'the ten moves over']]), say: 'Why carry? 15 ones is the same as 1 ten and 5 ones. The ten moves over to the tens column.' },
+    { cap: 'Now the tens', fig: V.stack(47, 38, '+', { hi: 1 }), say: 'Now the tens. 4 plus 3 is 7, plus the 1 we carried makes 8. Write the 8. The answer is 85.' },
+    { cap: 'Check with an estimate', fig: V.eq([['47 + 38 = 85', 'exact answer'], ['50 + 40 = 90', 'estimate: close ✓']]), say: 'Check with a quick estimate. 50 plus 40 is 90. That is close to 85, so the answer makes sense.' },
+    { cap: 'Bigger numbers, same steps', fig: V.stack(586, 742, '+'), say: 'Bigger numbers work the same way. Line up the places, start on the right, and carry when a column reaches 10 or more.' },
+  ] },
+  sub: { title: 'Subtracting Whole Numbers', scenes: [
+    { cap: 'Line up the places', fig: V.stack(72, 38, '-', { ans: false, marks: false }), say: 'To take 38 away from 72, line up the places with the bigger number on top. Start with the ones.' },
+    { cap: 'The top digit is too small', fig: V.stack(72, 38, '-', { ans: false, marks: false, hi: 0 }), say: 'The ones are 2 minus 8. We cannot take 8 from 2. Do not flip them around. Borrow instead.' },
+    { cap: 'Borrow: trade 1 ten for 10 ones', fig: V.stack(72, 38, '-', { ans: false, hi: 0 }), say: 'Borrow 1 ten from the 7. The 7 becomes 6. That ten is 10 ones, so the 2 becomes 12.' },
+    { cap: 'Subtract the ones', fig: V.stack(72, 38, '-', { show: 1, hi: 0 }), say: 'Now 12 minus 8 is 4. Write the 4 under the ones.' },
+    { cap: 'Then the tens', fig: V.stack(72, 38, '-', { hi: 1 }), say: 'Then the tens. 6 minus 3 is 3. The answer is 34.' },
+    { cap: 'Check by adding back', fig: V.stack(34, 38, '+'), say: 'Check by adding back. 34 plus 38 is 72, the number we started with. So 34 is right.' },
+  ] },
+  mul: { title: 'Multiplying', scenes: [
+    { cap: 'Multiplying means equal groups', fig: V.dots(3, 4), say: 'Multiplying means equal groups. 3 times 4 is 3 rows of 4. Count the dots: 12.' },
+    { cap: 'Break the big number apart', fig: V.eq([['67 × 8', '67 = 60 + 7']]), say: 'For a bigger problem, like 67 times 8, break 67 into tens and ones. That is 60 and 7.' },
+    { cap: 'First the tens', fig: V.eq([['67 × 8', '67 = 60 + 7'], ['60 × 8 = 480', '6 × 8 = 48, then a 0 on the end']]), say: 'First the tens. 6 times 8 is 48, so 60 times 8 is 480. Put a zero on the end.' },
+    { cap: 'Then the ones', fig: V.eq([['67 × 8', '67 = 60 + 7'], ['60 × 8 = 480', '6 × 8 = 48, then a 0 on the end'], ['7 × 8 = 56', 'the ones part']]), say: 'Then the ones. 7 times 8 is 56.' },
+    { cap: 'Add the parts', fig: V.eq([['67 × 8', '67 = 60 + 7'], ['60 × 8 = 480', 'the tens part'], ['7 × 8 = 56', 'the ones part'], ['480 + 56 = 536', 'add the parts']]), say: 'Add the two parts. 480 plus 56 is 536. So 67 times 8 is 536.' },
+    { cap: 'Your turn in the lesson', fig: V.eq([['43 × 6', '43 = 40 + 3'], ['40 × 6 = ?', '4 × 6, then a 0 on the end'], ['3 × 6 = ?', 'the ones part'], ['? + ? = answer', 'add the parts']]), say: 'Remember: break the big number into tens and ones, multiply each part, then add. Try 43 times 6 this way in the lesson.' },
+  ] },
+  div: { title: 'Dividing', scenes: [
+    { cap: 'Dividing means equal groups', fig: V.groups(12, 4), say: 'Dividing means making equal groups. 12 divided by 4 asks how many groups of 4 are in 12. The answer is 3.' },
+    { cap: 'Multiplication, backwards', fig: V.eq([['3 × 4 = 12', 'multiply'], ['12 ÷ 4 = 3', 'the same fact, backwards']]), say: 'Division is multiplication backwards. 3 times 4 is 12, so 12 divided by 4 is 3.' },
+    { cap: '96 ÷ 4: take out a big chunk', fig: V.tbl([['10', '4 × 10 = 40'], ['20', '4 × 20 = 80'], ['30', '4 × 30 = 120 (too big)']], ['groups of 4', 'uses up']), say: 'For 96 divided by 4, take out a big chunk. 20 groups of 4 use up 80. 30 groups would be too many.' },
+    { cap: 'See what is left', fig: V.eq([['4 × 20 = 80', 'first chunk: 20 groups'], ['96 − 80 = 16', 'what is left']]), say: '96 minus 80 leaves 16.' },
+    { cap: 'Add the chunks', fig: V.eq([['4 × 20 = 80', 'first chunk: 20 groups'], ['96 − 80 = 16', 'what is left'], ['4 × 4 = 16', '4 more groups fit'], ['20 + 4 = 24', 'add the chunks']]), say: '4 more groups of 4 make 16, and nothing is left. Add the chunks: 20 plus 4 is 24.' },
+    { cap: 'Check by multiplying back', fig: V.eq([['24 × 4', 'check'], ['20 × 4 = 80', 'the tens part'], ['4 × 4 = 16', 'the ones part'], ['80 + 16 = 96', 'matches ✓']]), say: 'Check by multiplying back. 24 times 4 is 96. It matches, so 96 divided by 4 is 24.' },
+  ] },
+  order: { title: 'Order of Operations', scenes: [
+    { cap: 'Why we need an order', fig: V.eq([['3 + 4 × 2', 'which step first?'], ['7 × 2 = 14', 'adding first ✗'], ['3 + 8 = 11', 'multiplying first ✓']]), say: 'What is 3 plus 4 times 2? Add first and you get 14. Multiply first and you get 11. Only 11 is right.' },
+    { cap: 'Four layers, top to bottom', fig: V.tbl([['<b>P</b>', 'Parentheses ( )'], ['<b>E</b>', 'Exponents, like 5²'], ['<b>M D</b>', 'Multiply and Divide'], ['<b>A S</b>', 'Add and Subtract']], ['layer', 'what to do']), say: 'Math has an order with four layers. Parentheses first. Then exponents. Then multiply and divide. Add and subtract come last.' },
+    { cap: 'Multiply before you add', fig: V.eq([['5 + 3 × 4', ''], ['5 + 12', 'multiply first: 3 × 4 = 12'], ['17', 'then add: 5 + 12']]), say: 'In 5 plus 3 times 4, multiply first. 3 times 4 is 12. Then add. 5 plus 12 is 17.' },
+    { cap: 'Parentheses go first', fig: V.eq([['(5 + 3) × 4', ''], ['8 × 4', 'parentheses first: 5 + 3 = 8'], ['32', 'then multiply: 8 × 4']]), say: 'Parentheses change the answer. Here, 5 plus 3 is inside parentheses, so do it first. 8 times 4 is 32.' },
+    { cap: 'Exponents come next', fig: V.eq([['6 + 4² − 5', ''], ['6 + 16 − 5', 'exponent first: 4² = 4 × 4 = 16'], ['22 − 5', 'then add: 6 + 16 = 22'], ['17', 'then subtract: 22 − 5']]), say: 'Exponents come before adding. 4 squared is 4 times 4, which is 16. Then 6 plus 16 is 22, and 22 minus 5 is 17.' },
+    { cap: 'Same layer? Go left to right', fig: V.eq([['10 − 4 + 3', ''], ['6 + 3', 'left to right: 10 − 4 = 6'], ['9', 'then 6 + 3']]), say: 'When two steps are in the same layer, go left to right. 10 minus 4 is 6. Then 6 plus 3 is 9.' },
+  ] },
+  neg: { title: 'Negative Numbers', scenes: [
+    { cap: 'Numbers below zero', fig: V.nl(-6, 6, { pts: [[-5, 'negative 5'], [0, 'zero']] }), say: 'Negative numbers are numbers below zero. On a number line, they sit to the left of zero.' },
+    { cap: 'Adding a positive: move right', fig: V.nl(-6, 6, { pts: [[-3]], jumps: [[-3, 2, 'right 5']] }) + V.eq([['−3 + 5 = 2', 'start at −3, move right 5']]), say: 'Adding a positive number moves you right. Start at negative 3 and move right 5. You land on 2.' },
+    { cap: 'Adding a negative: move left', fig: V.nl(-6, 6, { pts: [[2]], jumps: [[2, -4, 'left 6']] }) + V.eq([['2 + (−6) = −4', 'start at 2, move left 6']]), say: 'Adding a negative number moves you left. Start at 2 and move left 6. You land on negative 4.' },
+    { cap: 'Subtracting: add the opposite', fig: V.eq([['−3 − 6', ''], ['−3 + (−6)', 'add the opposite of 6'], ['−9', 'same signs: 3 + 6 = 9, keep the minus']]), say: 'To subtract, add the opposite. Negative 3 minus 6 becomes negative 3 plus negative 6. That is negative 9.' },
+    { cap: 'Subtracting a negative is adding', fig: V.eq([['4 − (−3)', ''], ['4 + 3', 'add the opposite of −3'], ['7', '']]), say: 'Subtracting a negative turns into adding. 4 minus negative 3 is 4 plus 3, which is 7.' },
+    { cap: 'Multiplying and dividing: the sign rule', fig: V.tbl([['3 × 4', 'same', '12'], ['(−3) × (−4)', 'same', '12'], ['3 × (−4)', 'different', '−12'], ['(−3) × 4', 'different', '−12']], ['problem', 'signs', 'answer']), say: 'For multiplying and dividing, use the sign rule. Same signs give a positive answer. Different signs give a negative answer.' },
+  ] },
+  fracadd: { title: 'Adding & Subtracting Fractions', scenes: [
+    { cap: 'Same bottom number: add the tops', fig: V.fbars([[1, 5], [2, 5], [3, 5]]), say: 'When the bottom numbers match, add the tops and keep the bottom. 1 fifth plus 2 fifths is 3 fifths.' },
+    { cap: 'Different bottoms do not match', fig: V.fbars([[1, 2], [1, 4]]), say: '1 half plus 1 fourth is different. The pieces are not the same size, so we cannot count them together yet.' },
+    { cap: 'Make the pieces the same size', fig: V.fbars([[1, 2], [2, 4]]) + V.eq([[`${fr(1, 2)} = ${fr('1 × 2', '2 × 2')} = ${fr(2, 4)}`]]), say: 'Make the pieces match. Multiply the top and the bottom of 1 half by 2. It becomes 2 fourths. The amount stays the same.' },
+    { cap: 'Now add the tops', fig: V.fbars([[2, 4], [1, 4], [3, 4]]), say: 'Now both are fourths. 2 fourths plus 1 fourth is 3 fourths.' },
+    { cap: 'When both bottoms must change', fig: V.fbars([[3, 6], [2, 6], [5, 6]]) + V.eq([[`${fr(1, 2)} + ${fr(1, 3)} = ${fr(3, 6)} + ${fr(2, 6)} = ${fr(5, 6)}`]]), say: 'Sometimes both fractions must change. For 1 half plus 1 third, use sixths. 3 sixths plus 2 sixths is 5 sixths.' },
+    { cap: 'Watch out', fig: V.fbars([[1, 2], [2, 5]]), say: 'Watch out. Never add the bottom numbers. 1 half plus 1 third is not 2 fifths. 2 fifths is even smaller than 1 half.' },
+  ] },
+  percent: { title: 'Percents', scenes: [
+    { cap: 'Percent means "out of 100"', fig: V.grid100(35), say: 'Percent means out of 100. 35 percent is 35 squares out of 100.' },
+    { cap: 'Percent to decimal', fig: V.tbl([['35%', '0.35'], ['50%', '0.50'], ['5%', '0.05'], ['120%', '1.20']], ['percent', 'decimal']), say: 'To turn a percent into a decimal, move the point two places to the left. 35 percent becomes 0.35.' },
+    { cap: '"Of" means multiply', fig: V.pbar(20, { whole: 60 }), say: 'The word of means multiply. 20 percent of 60 is 0.20 times 60, which is 12.' },
+    { cap: 'Shortcuts: 50%, 25% and 10%', fig: V.tbl([['50%', 'half', '30'], ['25%', 'divide by 4', '15'], ['10%', 'move the point 1 left', '6'], ['20%', '10% × 2', '12'], ['5%', 'half of 10%', '3']], ['percent', 'how', 'of 60']), say: 'Shortcuts save time. 50 percent is half. 25 percent is one fourth. For 10 percent, move the point one place to the left.' },
+    { cap: 'What percent is 15 of 60?', fig: V.pbar(25, { whole: 60 }) + V.eq([[`${fr(15, 60)} = ${fr(1, 4)} = 0.25`, 'part ÷ whole'], ['0.25 × 100 = 25%', 'move the point 2 places right']]), say: 'What percent is 15 of 60? Divide the part by the whole. 15 over 60 is 0.25, which is 25 percent.' },
+    { cap: 'Finding the whole', fig: V.tbl([['20%', '8'], ['10%', '4'], ['100%', '40']], ['percent', 'amount']), say: 'To find the whole, build up to 100 percent. If 20 percent is 8, then 10 percent is 4, and 100 percent is 40.' },
+  ] },
+};
+if (typeof module !== 'undefined') module.exports = window.VIDEOS;

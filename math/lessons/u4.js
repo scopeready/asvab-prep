@@ -80,7 +80,7 @@ LESSONS.equation = {
       say: 'Use the opposite operation. When the equation says <i>x</i> plus 7, subtract 7. Do not add 7. And whatever you do, do it to both sides.',
       fig: V.tbl([['subtract 7', '<i>x</i> = 5', '✓ right'], ['add 7', '<i>x</i> = 19', '✗ wrong']], ['<i>x</i> + 7 = 12', 'result', 'right?']) },
     { t: 'Remember',
-      say: 'Whatever you do to one side, do to the other.<br>Undo in reverse order: first add or subtract, then multiply or divide.<br>Check by putting your answer back in. On the test, you can try each answer choice this way.' },
+      say: 'Whatever you do to one side, do to the other.<br>Undo the last thing first. In 2<i>x</i> + 3 = 11, subtract 3, then divide by 2.<br>Check by putting your answer back in. On the test, you can try each answer choice this way.' },
   ],
 };
 
@@ -148,9 +148,9 @@ LESSONS.exprules = {
       fig: V.tbl([['2<sup>3</sup>', '8'], ['2<sup>2</sup>', '4'], ['2<sup>1</sup>', '2'], ['2<sup>0</sup>', '1'], ['2<sup>−1</sup>', V.fr(1, 2)], ['2<sup>−2</sup>', V.fr(1, 4)]], ['power', 'value']),
       ask: { q: 'What is 3<sup>−2</sup>?', opts: [V.fr(1, 9), '−9', '−6', V.fr(1, 6)], a: 0, why: `A negative exponent means 1 over the positive power. 3<sup>2</sup> = 9, so 3<sup>−2</sup> = ${V.fr(1, 9)}. The answer is a small positive number, not a negative one.` } },
     { t: 'Scientific notation for big numbers',
-      say: 'Scientific notation is a number from 1 to 10, times a power of 10. For 45,000, move the decimal point left until one digit is in front. That gives 4.5. You moved 4 places, so the power is 4.',
+      say: 'Scientific notation is a number that is at least 1 and less than 10, times a power of 10. For 45,000, move the decimal point left until one digit is in front. That gives 4.5. You moved 4 places, so the power is 4.',
       fig: V.eq([['45,000', 'the point starts at the end'], ['4.5', 'move the point 4 places left'], ['4.5 × 10<sup>4</sup>', '4 places, so the power is 4']]),
-      ask: { q: 'Write 320,000 in scientific notation.', opts: ['3.2 × 10<sup>5</sup>', '3.2 × 10<sup>4</sup>', '32 × 10<sup>4</sup>', '3.2 × 10<sup>6</sup>'], a: 0, why: 'Move the point left until one digit is in front: 3.2. That is 5 places, so the power is 5. The front number must be from 1 to 10, so 32 is not allowed.' } },
+      ask: { q: 'Write 320,000 in scientific notation.', opts: ['3.2 × 10<sup>5</sup>', '3.2 × 10<sup>4</sup>', '32 × 10<sup>4</sup>', '3.2 × 10<sup>6</sup>'], a: 0, why: 'Move the point left until one digit is in front: 3.2. That is 5 places, so the power is 5. The front number must be at least 1 and less than 10, so 32 is not allowed.' } },
     { t: 'Negative power of 10: small number',
       say: 'A negative power of 10 makes a small number. Move the decimal point left and fill the gaps with zeros. For 3.4 times 10 to the negative 3, move the point 3 places left. You get 0.0034.',
       fig: V.eq([['3.4 × 10<sup>−3</sup>'], ['0.0034', 'move the point 3 places left']]) + V.tbl([['10<sup>3</sup>', 'point moves 3 places right', '3.4 → 3,400'], ['10<sup>−3</sup>', 'point moves 3 places left', '3.4 → 0.0034']], ['power', 'what it does', 'example']),
@@ -232,7 +232,7 @@ LESSONS.quad = {
       fig: V.eq([['<i>x</i>² + 5<i>x</i> + 6 = 0'], ['(<i>x</i> + 2)(<i>x</i> + 3) = 0', 'factor: 2 × 3 = 6<br>and 2 + 3 = 5'], ['<i>x</i> = −3 or <i>x</i> = −2', 'set each factor to 0']]),
       ask: { q: 'Solve: <i>x</i>² − 7<i>x</i> + 10 = 0', opts: ['<i>x</i> = 2 or <i>x</i> = 5', '<i>x</i> = −5 or <i>x</i> = −2', '<i>x</i> = −2 or <i>x</i> = 5', '<i>x</i> = −5 or <i>x</i> = 2'], a: 0, why: 'Find two numbers that multiply to 10 and add to −7: −2 and −5. So (<i>x</i> − 2)(<i>x</i> − 5) = 0. Set each factor to 0: <i>x</i> = 2 or <i>x</i> = 5.' } },
     { t: 'x squared equals a number',
-      say: 'When <i>x</i> squared equals a number, there are two answers. 5 times 5 is 25. Negative 5 times negative 5 is also 25. If the number is on the left side, move it over first.',
+      say: 'When <i>x</i> squared equals a positive number, there are two answers. 5 times 5 is 25. Negative 5 times negative 5 is also 25. If the number is on the left side, move it over first.',
       fig: V.eq([['<i>x</i>² − 25 = 0'], ['<i>x</i>² = 25', 'add 25 to both sides'], ['<i>x</i> = −5 or <i>x</i> = 5', 'square root: two answers']]),
       ask: { q: 'Solve: <i>x</i>² = 49', opts: ['<i>x</i> = −7 or <i>x</i> = 7', '<i>x</i> = 7', '<i>x</i> = −7', '<i>x</i> = −14 or <i>x</i> = 14'], a: 0, why: '7 × 7 = 49 and (−7) × (−7) = 49. Both work, so the answer needs both: <i>x</i> = −7 or <i>x</i> = 7.' } },
     { t: 'No plain number? Factor out x',
@@ -243,6 +243,6 @@ LESSONS.quad = {
       say: 'On the test, you can try each answer choice in the equation. The right one makes it true. Try negative 2 here: 4 minus 10 plus 6 is 0. So negative 2 is an answer.',
       fig: V.eq([['<i>x</i>² + 5<i>x</i> + 6 = 0', 'try <i>x</i> = −2'], ['(−2)² + 5(−2) + 6', 'put −2 in'], ['4 − 10 + 6 = 0 ✓', '(−2)² = 4<br>5(−2) = −10']]) },
     { t: 'Remember',
-      say: 'Get one side to 0, then factor.<br>Set each factor equal to 0. The answer has the opposite sign from the number in the factor.<br><i>x</i> squared equals a number has two answers: one positive, one negative.' },
+      say: 'Get one side to 0, then factor.<br>Set each factor equal to 0. The answer has the opposite sign from the number in the factor.<br><i>x</i> squared equals a positive number has two answers: one positive, one negative.' },
   ],
 };

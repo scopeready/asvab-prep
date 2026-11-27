@@ -375,7 +375,7 @@ function genExpo(d) {
   const t = d === 1 ? pick(['sq', 'cube', 'root']) : d === 2 ? pick(['ten', 'root', 'between', 'cuberoot']) : pick(['simp', 'simp', 'negsq', 'between']);
   if (t === 'sq' || t === 'cube') {
     const a = t === 'sq' ? rnd(2, 15) : rnd(2, 6), e = t === 'sq' ? 2 : 3, x = a ** e;
-    const steps = [`${pw(a, e)} means multiply ${a} by itself ${e} times: ${Array(e).fill(a).join(' × ')}.`, `= ${b(num(x))} (not ${a} × ${e} = ${a * e}).`];
+    const steps = [`${pw(a, e)} means ${e} copies of ${a} multiplied together: ${Array(e).fill(a).join(' × ')}.`, `= ${b(num(x))} (not ${a} × ${e} = ${a * e}).`];
     return NQ(`What is ${pw(a, e)}?`, x, [a * e, x + a, a ** (e - 1), x - 1], steps, { min: 1 });
   }
   if (t === 'ten') {

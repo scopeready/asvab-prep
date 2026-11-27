@@ -5,7 +5,7 @@ Two study apps for the ASVAB sections that make up the AFQT (the score that deci
 | App | Covers | Live |
 |---|---|---|
 | **ASVAB Math** (`math/`) | Arithmetic Reasoning and Mathematics Knowledge: 32 levels in 5 units, from adding whole numbers to algebra and geometry | https://asvab-math.vercel.app |
-| **ASVAB English** (`english/`) | Word Knowledge and Paragraph Comprehension: 477 flashcards (words and word parts), 5 reading levels | https://asvab-english.vercel.app |
+| **ASVAB English** (`english/`) | Word Knowledge and Paragraph Comprehension: 505 flashcards (420 words, 85 word parts), 5 reading levels | https://asvab-english.vercel.app |
 
 Both are plain HTML, CSS and JavaScript. There is no build step, no account and no server. Progress is saved on the learner's own device, and after one visit with internet the whole app (videos included) works offline. They install to a phone's home screen.
 
@@ -55,9 +55,11 @@ tests/      see below
 node tools/sync.cjs v4          # copy shared files, bump the offline cache name (use the next number each release)
 node tests/lesson-check.cjs math math/lessons/u1.js     # format and length rules for lesson cards
 node tests/stress.cjs math      # thousands of generated questions per level: 4 different choices, valid answer, no broken text
-node tests/stress.cjs english
+node tests/stress.cjs english   # also checks no vocabulary question offers a near-synonym as a wrong choice
+node tests/answers.cjs          # works out every math answer from the question text alone and compares it with the keyed choice
 node tests/e2e.cjs math         # a phone-sized browser plays level 1 start to finish and opens every lesson card
 node tests/e2e.cjs english
+node tests/playthrough.cjs math # plays EVERY level, checkpoint and timed test in order (a few minutes; also: english)
 node tests/offline.cjs math     # loads once, cuts the connection, checks a lesson and a video still load
 node tests/upgrade.cjs math     # progress saved by an older version still works
 ```

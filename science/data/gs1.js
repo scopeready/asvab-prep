@@ -193,7 +193,7 @@ ST.body = {
       c: ['The liver', 'The kidney', 'The heart', 'The lung'], a: 0,
       why: 'The liver makes bile. Bile breaks fat into tiny drops so it can be digested.' },
     { q: 'What happens if a person\'s kidneys stop working?',
-      c: ['Food cannot be swallowed', 'Air cannot reach the lungs', 'Wastes build up in the blood', 'The bones become soft'], a: 2,
+      c: ['Food cannot be swallowed', 'Air cannot reach the lungs', 'Wastes build up in the blood', 'Light cannot enter the eyes'], a: 2,
       why: 'The kidneys filter wastes out of the blood and make urine. If they stop, the wastes stay in the blood.' },
     { q: 'The brain and which other part make up the central nervous system?',
       c: ['The heart', 'The spinal cord', 'The skull', 'The lungs'], a: 1,

@@ -49,7 +49,7 @@ ST.tools = {
     { q: 'What does a combination wrench have on its two ends?',
       c: ['Two open ends of different sizes', 'A socket and a ratchet handle', 'A hammer face and a claw', 'An open end and a box end'], a: 3,
       why: 'A combination wrench has an open end and a box end, both the same size. You get two kinds of wrench in one tool.' },
-    { q: 'A nut sits on a long fuel line, so a wrench cannot drop over it from the top. Which wrench slides onto the nut from the side?',
+    { q: 'A nut sits on a long steel rod that is fixed at both ends, so a wrench cannot drop over it. Which wrench slides onto the nut from the side?',
       c: ['Box-end wrench', 'Open-end wrench', 'Deep socket', 'Hex key'], a: 1,
       why: 'An open-end wrench has a U-shaped jaw with one side open. It can slide onto a nut from the side when a closed ring or socket cannot get over it.' },
     { q: 'You do not have the right size wrench. Which one wrench can be set to fit several sizes of nut?',
@@ -120,7 +120,7 @@ ST.cutmeas = {
   facts: [
     ['tape measure', 'a long, flexible steel ruler that rolls up into a case'],
     ['combination square', 'a steel ruler with a sliding head for marking 90 and 45 degree angles'],
-    ['level', 'a tool with a bubble that centers when a surface is flat and even'],
+    ['level', 'a tool with a bubble that centers when a surface does not tilt'],
     ['plumb bob', 'a pointed weight on a string that shows a true up-and-down line'],
     ['calipers', 'a tool with two jaws that close to measure the distance across a part'],
     ['micrometer', 'a screw-type tool that measures tiny sizes to a thousandth of an inch'],

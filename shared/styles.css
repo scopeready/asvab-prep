@@ -122,7 +122,7 @@ details.rev summary { cursor: pointer; font-weight: 600; }
 input[type=text] { width: 100%; font: inherit; font-size: 19px; padding: 14px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); color: var(--ink); }
 input[type=text]:focus { outline: none; border-color: var(--gold); }
 table.hist { width: 100%; border-collapse: collapse; font-size: 15px; } table.hist td, table.hist th { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
-.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; z-index: 50; max-width: 90vw; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; z-index: 50; max-width: 90vw; pointer-events: none; /* a tap on a button under the message must still reach the button */ }
 
 /* math */
 .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .86em; line-height: 1.12; margin: 0 2px; }

@@ -115,7 +115,7 @@ const GEN = {
   gear(d) {
     if (Math.random() < 0.3) { const n = rnd(2, 3), dir = pick(['clockwise', 'counterclockwise']), other = dir === 'clockwise' ? 'counterclockwise' : 'clockwise', ans = n === 2 ? other : dir;
       const c = choices(cap(ans), [cap(ans === dir ? other : dir), 'It does not turn', 'It turns back and forth']);
-      return { q: `<span class="kicker">${SEC.MC}</span>${n === 2 ? 'Two gears are meshed.' : 'Three gears are meshed in a row.'} The first gear turns ${dir}. Which way does the ${n === 2 ? 'second' : 'third'} gear turn?`, fig: n === 2 ? V.gears(12, 24) : '', ...c,
+      return { q: `<span class="kicker">${SEC.MC}</span>${n === 2 ? 'Two gears are meshed.' : 'Three gears are meshed in a row.'} The first gear turns ${dir}. Which way does the ${n === 2 ? 'second' : 'third'} gear turn?`, fig: n === 2 ? V.gears(12, 24, { arrows: false }) : '', ...c,
         steps: ['Two gears that touch always turn in opposite directions.', n === 2 ? `The first turns ${dir}, so the second turns ${other}.` : `The first turns ${dir}, the second turns ${other}, and the third turns ${dir} again.`, `Answer: ${b(cap(ans))}`] }; }
     const small = pick([8, 10, 12, 15, 20]), k = rnd(2, d === 1 ? 3 : 5), big = small * k, up = Math.random() < 0.5;
     const t1 = up ? big : small, t2 = up ? small : big, rpm2 = 10 * rnd(2, 9) * (up ? k : 1), rpm1 = up ? rpm2 / k : rpm2 * k;

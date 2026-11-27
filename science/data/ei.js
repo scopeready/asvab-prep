@@ -92,10 +92,10 @@ ST.elec = {
 ST.ohm = {
   facts: [
     ["Ohm's law", 'the name of the rule that ties volts, amps and ohms together'],
-    ['V = I × R', 'the form you use to find volts', 'volts = amps × ohms'],
-    ['I = V ÷ R', 'the form you use to find amps', 'amps = volts ÷ ohms'],
-    ['R = V ÷ I', 'the form you use to find ohms', 'ohms = volts ÷ amps'],
-    ['P = V × I', 'the formula you use to find watts', 'watts = volts × amps'],
+    ['to find volts', 'multiply amps by ohms', 'V = I × R'],
+    ['to find amps', 'divide volts by ohms', 'I = V ÷ R'],
+    ['to find ohms', 'divide volts by amps', 'R = V ÷ I'],
+    ['to find watts', 'multiply volts by amps', 'P = V × I'],
     ['letter I', 'stands for current in formulas'],
     ['letter R', 'stands for resistance in formulas'],
     ['letter P', 'stands for power in formulas'],
@@ -178,8 +178,8 @@ ST.ohm = {
 ST.circuits = {
   facts: [
     ['series circuit', 'a circuit with only one path for the current'],
-    ['parallel circuit', 'a circuit with two or more side-by-side paths for the current'],
-    ['combination circuit', 'a circuit with some parts in one line and others on side-by-side paths'],
+    ['parallel circuit', 'a circuit where every part sits on its own separate path'],
+    ['combination circuit', 'a circuit that mixes one-after-another parts with side-by-side parts'],
     ['branch', 'one of the separate paths in a parallel circuit'],
     ['junction', 'a point where wires join and the current splits or comes back together'],
     ['total resistance', 'the single number of ohms that the whole circuit acts like'],

@@ -336,7 +336,7 @@ ST.gear = {
     ['gear train', 'a row of toothed wheels, each one turning the next'],
   ],
   qs: [
-    { q: 'Gear A in the picture turns clockwise. Which way does gear B turn?', fig: V.gears(12, 12),
+    { q: 'Gear A in the picture turns clockwise. Which way does gear B turn?', fig: V.gears(12, 12, { arrows: false }),
       c: ['Clockwise', 'Counterclockwise', 'It does not turn', 'Back and forth'], a: 1, d: 1,
       why: 'Two gears that mesh always turn in opposite directions. If A turns clockwise, B turns counterclockwise.' },
     { q: 'Three gears mesh in a row. The first turns clockwise. Which way does the third turn?',

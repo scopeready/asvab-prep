@@ -124,7 +124,7 @@ Most cards need a picture. For these subjects, use:
 | `V.circuit('series' \| 'parallel', { v: 12, r: [4, 2], total: true })` | A battery and 1 to 3 resistors with volts and ohms labeled. Values may be strings such as `'?'`. `total: true` adds "Total resistance: …" (numbers only). |
 | `V.lever({ cls: 1, load: 100, effort: '?', dl: 2, de: 4 })` | A lever of class 1, 2 or 3 with fulcrum, load (lb), effort (lb), load arm `dl` and effort arm `de` (ft). For class 2, `dl` < `de`; for class 3, `de` < `dl`. |
 | `V.pulley(n, { load: 100 })` | A pulley system where `n` rope sections (1 to 4) hold the load. The pull shown is load ÷ n unless you pass `effort: '?'`. |
-| `V.gears(12, 36, { rpm: 90 })` | Two meshing gears with tooth counts and (optional) speeds; pass `rpm2: false` to show "? rpm" on the second gear. |
+| `V.gears(12, 36, { rpm: 90 })` | Two meshing gears with tooth counts and (optional) speeds; pass `rpm2: false` to show "? rpm" on the second gear. The gears carry arrows showing which way each turns; pass `arrows: false` when the question asks the direction. |
 | `V.incline(10, 2, { load: 200 })` | A ramp with its length and height. |
 | `V.nl`, `V.pbar`, `V.rect`, `V.box`, `V.cyl`, `V.circle` | From the math library, for scales (pH, temperature), areas of pistons and tanks. |
 

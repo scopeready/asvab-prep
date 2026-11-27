@@ -180,7 +180,7 @@ LESSONS.acdc = {
   hook: 'A battery and a wall outlet give two different kinds of electricity. The test expects you to know both, and how to stay safe around them.',
   cards: [
     { t: 'DC: one direction',
-      say: 'Direct current, or DC, flows in one direction only. Batteries give DC. So do the things that run on them, like flashlights, phones and the electrical system of a car.',
+      say: 'Direct current, or DC, flows in one direction only. Batteries give DC. So do the things that run on them, like flashlights, phones and car electrical systems.',
       fig: V.sym(['battery', 'lamp']) },
     { t: 'AC: back and forth',
       say: 'Alternating current, or AC, keeps reversing direction. It flows one way, then the other, over and over. Power plants make AC, and wall outlets deliver it.',
@@ -210,7 +210,7 @@ LESSONS.acdc = {
         why: 'White is neutral. Black is hot, and green or bare copper is ground.' } },
     { t: 'Parts that keep you safe',
       say: 'Too much current makes wires hot. A fuse or circuit breaker opens the circuit before that happens. The ground wire gives stray current a safe path. Then the metal case of a tool cannot shock you.',
-      fig: V.tbl([['Fuse or breaker', 'stops too much current'], ['Ground wire', 'safe path for stray current']], ['Part', 'How it protects']) },
+      fig: V.tbl([['Fuse or breaker', 'stops too much current'], ['Ground wire', 'safe path for stray amps']], ['Part', 'How it protects']) },
     { t: 'Watch out', tip: true,
       say: 'Wire gauge runs backward. A smaller gauge number means a thicker wire. 12-gauge wire is thicker than 14-gauge wire, so it can safely carry more current.',
       fig: V.layers([['10-gauge', 'thickest, most current'], ['12-gauge', 'thinner'], ['14-gauge', 'thinner still']]) },

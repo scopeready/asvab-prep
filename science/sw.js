@@ -1,7 +1,7 @@
 /* ASVAB Science & Tech service worker: caches the whole app so it works with no internet.
    Bump VERSION on every release so phones pick up the new files. */
 const VERSION = 'asvab-science-v6';
-const FILES = ["./","app.js","data/ai.js","data/gs1.js","data/gs2.js","data/si.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","index.html","lessons/gs1.js","levels.js","manifest.webmanifest","styles.css","viz.js"];
+const FILES = ["./","app.js","data/ai.js","data/ei.js","data/gs1.js","data/gs2.js","data/mc.js","data/si.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","index.html","lessons/ai.js","lessons/ei.js","lessons/gs1.js","lessons/gs2.js","lessons/mc.js","lessons/si.js","levels.js","manifest.webmanifest","styles.css","viz.js"];
 const MEDIA = []; // lesson videos: cached in the background, one at a time, so a slow connection never blocks the app
 
 self.addEventListener('install', (e) => {

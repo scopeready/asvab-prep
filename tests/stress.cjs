@@ -19,7 +19,12 @@ const check = (where, q) => { total++; const t = JSON.stringify(q);
 for (const l of LEVELS) for (let i = 0; i < N; i++) check(l.id, l.gen(1 + (i % 3)));
 for (const T of Object.values(TESTS)) for (let i = 0; i < N; i++) for (const g of T.gens) check('test ' + T.id, g(2 + (i % 2)));
 let cards = 0; for (const l of LEVELS) if (l.cards) { const ids = new Set(); for (const c of l.cards) { cards++; if (ids.has(c.id)) bad.push(l.id + ': duplicate card ' + c.id); ids.add(c.id); for (let i = 0; i < 4; i++) check(l.id + ' card ' + c.id, l.cardQ(c.id)); } }
+// vocabulary: a near-synonym of the right answer must never be offered as a wrong choice
+const D = globalThis.ASVAB.DATA; let syn = 0;
+if (D && D.related) { const byDef = {}, names = new Set(D.ALL.map((w) => w.word)); for (const w of D.ALL) (byDef[w.def] = byDef[w.def] || []).push(w.word);
+  for (const l of LEVELS) if (l.words) for (const c of l.cards) for (let i = 0; i < 30; i++) { const q = l.cardQ(c.id), w = c.id.slice(2); syn++;
+    q.choices.forEach((ch, k) => { if (k === q.answer) return; const t = String(ch).replace(/<[^>]+>/g, ''), cand = (byDef[t] || []).concat(names.has(t) ? [t] : []); if (cand.length && cand.every((x) => D.related(x, w)) && bad.length < 25) bad.push(`${l.id}: "${t}" is offered as a wrong answer for its near-synonym "${w}"`); }); } }
 const LS = globalThis.LESSONS || {}; const noLesson = LEVELS.filter((l) => !l.checkpoint && !LS[l.lesson || l.id] && !l.cards).map((l) => l.id);
 if (noLesson.length) bad.push('levels with no lesson and no flashcards: ' + noLesson.join(', '));
-console.log(`${app}: ${total} questions checked across ${LEVELS.length} levels and ${Object.keys(TESTS).length} tests${cards ? `, ${cards} flashcards` : ''}`);
+console.log(`${app}: ${total} questions checked across ${LEVELS.length} levels and ${Object.keys(TESTS).length} tests${cards ? `, ${cards} flashcards` : ''}${syn ? `, ${syn} vocabulary questions checked for near-synonym choices` : ''}`);
 if (bad.length) { console.log('PROBLEMS:\n  ' + bad.join('\n  ')); process.exit(1); } console.log('ALL OK');

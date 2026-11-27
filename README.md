@@ -55,9 +55,11 @@ tests/      see below
 node tools/sync.cjs v4          # copy shared files, bump the offline cache name (use the next number each release)
 node tests/lesson-check.cjs math math/lessons/u1.js     # format and length rules for lesson cards
 node tests/stress.cjs math      # thousands of generated questions per level: 4 different choices, valid answer, no broken text
-node tests/stress.cjs english
+node tests/stress.cjs english   # also checks no vocabulary question offers a near-synonym as a wrong choice
+node tests/answers.cjs          # works out every math answer from the question text alone and compares it with the keyed choice
 node tests/e2e.cjs math         # a phone-sized browser plays level 1 start to finish and opens every lesson card
 node tests/e2e.cjs english
+node tests/playthrough.cjs math # plays EVERY level, checkpoint and timed test in order (a few minutes; also: english)
 node tests/offline.cjs math     # loads once, cuts the connection, checks a lesson and a video still load
 node tests/upgrade.cjs math     # progress saved by an older version still works
 ```

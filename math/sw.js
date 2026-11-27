@@ -1,6 +1,6 @@
 /* ASVAB Math service worker: caches the whole app so it works with no internet.
    Bump VERSION on every release so phones pick up the new files. */
-const VERSION = 'asvab-math-v3';
+const VERSION = 'asvab-math-v4';
 const FILES = ["./","app.js","figs.js","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","index.html","lessons/u1.js","lessons/u2.js","lessons/u3.js","lessons/u4.js","lessons/u5.js","lessons/videos.js","levels.js","levels2.js","manifest.webmanifest","styles.css","video/add.jpg","video/div.jpg","video/fracadd.jpg","video/mul.jpg","video/neg.jpg","video/order.jpg","video/percent.jpg","video/sub.jpg","viz.js"];
 const MEDIA = ["video/add.mp4","video/div.mp4","video/fracadd.mp4","video/mul.mp4","video/neg.mp4","video/order.mp4","video/percent.mp4","video/sub.mp4"]; // lesson videos: cached in the background, one at a time, so a slow connection never blocks the app
 

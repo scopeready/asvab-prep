@@ -43,8 +43,29 @@ function choices(correct, wrongs) {
   const ch = shuffle(set); return { choices: ch, answer: ch.indexOf(correct) };
 }
 // three wrong definitions: same part of speech, different meaning, preferably the same tier
+// Words close enough in meaning that one must never be offered as a wrong answer for another.
+// Without this, "alter most nearly means" could list both "change" and "adjust", and both would be defensible.
+const SYNONYMS = [
+  ['alter', 'modify', 'adapt'], ['ample', 'abundant', 'adequate', 'sufficient'], ['accurate', 'precise'], ['brief', 'concise', 'temporary', 'transient', 'ephemeral'],
+  ['brittle', 'fragile', 'feeble'], ['crucial', 'essential', 'vital'], ['evident', 'obvious'], ['humble', 'modest', 'timid'], ['immense', 'vast'], ['acquire', 'obtain'],
+  ['forbid', 'prohibit'], ['maintain', 'retain', 'recall'], ['hazard', 'peril'], ['severe', 'intense'], ['alert', 'cautious', 'thorough', 'prudent', 'wary', 'meticulous', 'vigilant', 'circumspect'],
+  ['reliable', 'loyal', 'consistent'], ['minor', 'inferior'], ['persistent', 'durable'], ['persistent', 'tenacious', 'obstinate', 'defiant', 'intransigent', 'recalcitrant'],
+  ['abandon', 'resign', 'relinquish', 'concede'], ['retreat', 'yield'], ['hardship', 'burden', 'obstacle', 'ordeal', 'catastrophe'], ['barely', 'seldom'], ['abruptly', 'hastily'],
+  ['mundane', 'tedious'], ['hinder', 'impede', 'deter', 'thwart', 'procrastinate', 'waver'],
+  ['alleviate', 'diminish', 'undermine', 'curtail', 'abate', 'mitigate', 'assuage', 'quell', 'enervate', 'ameliorate', 'placate', 'pacify', 'deplete', 'squander'],
+  ['aloof', 'reticent', 'laconic', 'taciturn'], ['dubious', 'skeptical', 'cynical'], ['jovial', 'gregarious', 'amiable', 'cordial', 'benevolent', 'affable', 'magnanimous'],
+  ['animosity', 'malice', 'disdain', 'acrimony', 'rancor'], ['fortitude', 'valor'], ['opulent', 'affluent', 'lucrative'], ['apathetic', 'indifferent', 'callous', 'lethargic', 'dormant', 'stagnant'],
+  ['bolster', 'augment'], ['audacious', 'intrepid', 'impetuous', 'spontaneous'], ['credible', 'plausible', 'feasible', 'pragmatic'],
+  ['fervent', 'zealous', 'exuberant', 'elated', 'ebullient', 'sanguine', 'jovial'], ['frugal', 'thrifty'],
+  ['rebuke', 'reprimand', 'castigate', 'censure', 'denigrate', 'disparage'], ['ambiguous', 'tentative', 'dubious'], ['commend', 'endorse', 'extol', 'venerate'], ['adamantly', 'vehemently'],
+  ['judicious', 'sagacious', 'erudite', 'circumspect', 'prudent'], ['cogent', 'lucid'], ['alacrity', 'zeal'], ['dearth', 'paucity'], ['belligerent', 'pugnacious', 'defiant'],
+  ['capricious', 'mercurial', 'volatile'], ['cursory', 'perfunctory'], ['deleterious', 'noxious', 'pernicious'], ['garrulous', 'verbose'], ['imperturbable', 'placid'],
+  ['exonerate', 'vindicate'], ['spurious', 'tenuous'],
+];
+const SYN = {}; SYNONYMS.forEach((g, i) => g.forEach((w) => (SYN[w] = SYN[w] || []).push(i)));
+const related = (a, c) => a !== c && (SYN[a] || []).some((i) => (SYN[c] || []).includes(i));
 function wrongDefs(w, n = 3) {
-  const same = (x) => x.def !== w.def && x.word !== w.word;
+  const same = (x) => x.def !== w.def && x.word !== w.word && !related(x.word, w.word);
   let pool = shuffle(ALL.filter((x) => same(x) && x.pos === w.pos && x.t === w.t));
   if (pool.length < n) pool = pool.concat(shuffle(ALL.filter((x) => same(x) && x.pos === w.pos && x.t !== w.t)));
   if (pool.length < n) pool = pool.concat(shuffle(ALL.filter(same)));
@@ -70,8 +91,9 @@ function qWordInContext(w) {
     `Answer: ${b(esc(w.def))}` ] };
 }
 function qWhichWord(w) {
-  let pool = shuffle(ALL.filter((x) => x.pos === w.pos && x.def !== w.def && x.t === w.t));
-  if (pool.length < 3) pool = pool.concat(shuffle(ALL.filter((x) => x.pos === w.pos && x.def !== w.def)));
+  const ok = (x) => x.pos === w.pos && x.def !== w.def && !related(x.word, w.word);
+  let pool = shuffle(ALL.filter((x) => ok(x) && x.t === w.t));
+  if (pool.length < 3) pool = pool.concat(shuffle(ALL.filter(ok)));
   const c = choices(w.word, pool.slice(0, 3).map((x) => x.word));
   return { q: `<span class="kicker">Word Knowledge</span>Which word means ${b('"' + esc(w.def) + '"')}?`, ...c, steps: [
     'Go through the choices and say what each word means.',
@@ -87,7 +109,7 @@ const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 // ---------- word parts ----------
 // parts whose meanings overlap: never offered as each other's wrong answer
-const LOOKALIKE = [['hyper-', 'super-', 'over-'], ['hypo-', 'sub-', 'under-'], ['un-', 'dis-', 'de-'], ['co-', 'inter-'],
+const LOOKALIKE = [['hyper-', 'super-', 'over-'], ['hypo-', 'sub-', 'under-'], ['un-', 'dis-', 'de-'], ['co-', 'inter-'], ['mis-', 'mal-'], ['de-', 'ex-'], ['mid-', 'semi-', 'inter-'], ['-ish', '-ous'], ['graph', 'photo'],
   ['-ist', '-er/-or'], ['-ous', '-ful', '-ive', '-ic'], ['-ness', '-ment', '-ion', '-ship', '-ism'],
   ['vid', 'spect'], ['graph', 'scrib'], ['aud', 'phon', 'voc'], ['voc', 'dict'], ['geo', 'terr'], ['port', 'duc', 'mit'], ['photo', 'sol']];
 const lookalike = (a, c) => LOOKALIKE.some((g) => g.includes(a) && g.includes(c));
@@ -209,14 +231,14 @@ for (const u of UNITS) {
 const vocabAll = (d) => vocabQ(fresh(pick([T1, T2, T2, T3, T3].filter((t) => t.length)), (x) => x.word), d);
 const TESTS = {
   WK: { id: 'WK', name: 'Word Knowledge', short: 'WK', count: 15, minutes: 9, gens: [vocabAll], unlockAfter: 'check3', about: 'Vocabulary: what a word means, alone or in a sentence. On the computer ASVAB this section is 15 scored questions in 9 minutes, so you need to move fast.' },
-  PC: { id: 'PC', name: 'Paragraph Comprehension', short: 'PC', count: 10, minutes: 27, gens: [(d) => pcQ(['main', 'detail', 'inference', 'vocab', 'purpose', 'tone'], d)], unlockAfter: 'check4', about: 'Short passages with a question each. On the computer ASVAB this section is about 11 questions in 22 minutes.' },
+  PC: { id: 'PC', name: 'Paragraph Comprehension', short: 'PC', count: 10, minutes: 27, gens: [(d) => pcQ(['main', 'detail', 'inference', 'vocab', 'purpose', 'tone'], d)], unlockAfter: 'check4', about: 'Short passages with a question each. On the computer ASVAB this section is 10 scored questions in 27 minutes.' },
 };
 
 const CFG = {
   app: 'ASVAB English', key: 'asvabEnglish.v1', sections: { WK: 'Word Knowledge', PC: 'Paragraph Comprehension' }, guided: false, hasVideo: false,
   otherApp: { name: 'ASVAB Math', url: 'https://asvab-math.vercel.app' },
   practiceHint: 'Read every choice before you pick. On the real test you cannot go back.',
-  testRules: ['Like the computer ASVAB, you can\'t go back to change an answer.', 'Word Knowledge is fast: about 35 seconds a question. Do not get stuck on one word.'],
+  testRules: ['Like the computer ASVAB, you can\'t go back to change an answer.', 'Word Knowledge is fast: 36 seconds a question. Do not get stuck on one word.'],
   passingHTML: `<p>The ASVAB score the military uses to decide if you can enlist is the <b>AFQT</b>. It is built from four sections: the two English sections here, <b>Word Knowledge</b> and <b>Paragraph Comprehension</b> (combined into a Verbal score that counts <b>double</b>), plus two math sections (Arithmetic Reasoning and Mathematics Knowledge). Because English counts double, it is half of your AFQT.</p>
     <p>The AFQT is a percentile from 1 to 99. Most branches require about <b>31 to 36</b> with a high school diploma, the Coast Guard asks for more, and many jobs need higher line scores. Check the current minimum with a recruiter.</p>
     <p><b>How to read your readiness:</b> 60% or more means you are on track for the English half; 75% or more gives you a comfortable cushion; 90% or more means you should pass the English sections with ease. For the math half, use the <a href="https://asvab-math.vercel.app">ASVAB Math</a> app.</p>`,
@@ -224,5 +246,5 @@ const CFG = {
     <p><b>Timed tests:</b> the same length as the computer ASVAB: 15 Word Knowledge questions in 9 minutes and 10 Paragraph Comprehension questions in 27 minutes. The real test can add unscored tryout questions, with extra time for them.</p>`,
 };
 
-root.ASVAB = { UNITS, LEVELS, TESTS, CFG, H: { pick, rnd }, DATA: { T1, T2, T3, PARTS, PASSAGES, PCQ } };
+root.ASVAB = { UNITS, LEVELS, TESTS, CFG, H: { pick, rnd }, DATA: { T1, T2, T3, PARTS, PASSAGES, PCQ, ALL, SYNONYMS, related } };
 })(typeof window !== 'undefined' ? window : globalThis);

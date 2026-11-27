@@ -2,7 +2,7 @@ window.ASVAB_EN_PARTS = {
   prefixes: [
     ["un-", "not", [["unhappy", "not happy"], ["unfair", "not fair"]]],
     ["re-", "again", [["rebuild", "build again"], ["redo", "do again"]]],
-    ["pre-", "before", [["preview", "see before others"], ["prehistoric", "before written history"]]],
+    ["pre-", "before", [["preview", "see ahead of time"], ["prehistoric", "before written history"]]],
     ["mis-", "wrongly", [["misspell", "spell wrongly"], ["misjudge", "judge wrongly"]]],
     ["dis-", "do the opposite of", [["disagree", "fail to agree"], ["disappear", "go out of sight"]]],
     ["sub-", "under", [["submarine", "a ship that travels under the sea"], ["subway", "an underground railway"]]],
@@ -22,14 +22,14 @@ window.ASVAB_EN_PARTS = {
     ["co-", "together", [["cooperate", "work together"], ["coworker", "a person you work together with"]]],
     ["auto-", "self", [["autobiography", "a life story written by oneself"], ["automatic", "working by itself"]]],
     ["tri-", "three", [["triangle", "a shape with three angles"], ["tricycle", "a cycle with three wheels"]]],
-    ["bi-", "two", [["bicycle", "a cycle with two wheels"], ["biweekly", "every two weeks"]]],
+    ["bi-", "two", [["bicycle", "a cycle with two wheels"], ["bilingual", "speaking two languages"]]],
     ["mono-", "one", [["monorail", "a train that runs on one rail"], ["monotone", "a single unchanging tone"]]],
     ["hyper-", "beyond normal", [["hyperactive", "more active than normal"], ["hypersensitive", "more sensitive than normal"]]],
-    ["hypo-", "below normal", [["hypothermia", "body temperature below normal"], ["hypodermic", "beneath the skin"]]],
-    ["de-", "remove", [["defrost", "remove frost or ice"], ["deflate", "let the air out of"]]],
+    ["hypo-", "below normal", [["hypothermia", "body temperature below normal"], ["hypoglycemia", "blood sugar below normal"]]],
+    ["de-", "remove", [["defrost", "remove frost or ice"], ["deflate", "remove the air from"]]],
     ["super-", "above", [["supervise", "watch over the work of others"], ["superhuman", "above ordinary human ability"]]],
     ["intra-", "within", [["intramural", "within one school"], ["intravenous", "within a vein"]]],
-    ["mid-", "middle", [["midnight", "the middle of the night"], ["midway", "in the middle of the way"]]]
+    ["mid-", "middle", [["midnight", "the middle of the night"], ["midsummer", "the middle of summer"]]]
   ],
   suffixes: [
     ["-less", "without", [["fearless", "without fear"], ["homeless", "without a home"]]],
@@ -51,13 +51,13 @@ window.ASVAB_EN_PARTS = {
     ["-ish", "somewhat", [["reddish", "somewhat red"], ["greenish", "somewhat green"]]],
     ["-ly", "in a way that is", [["quickly", "in a quick way"], ["quietly", "in a quiet way"]]],
     ["-ship", "relationship or position", [["friendship", "the relationship between friends"], ["leadership", "the position of a leader"]]],
-    ["-ic", "relating to", [["athletic", "relating to athletes or sports"], ["historic", "relating to history"]]]
+    ["-ic", "relating to", [["athletic", "relating to athletes or sports"], ["poetic", "relating to poetry"]]]
   ],
   roots: [
     ["bio", "life", [["biology", "the study of life"], ["biography", "the written story of a person's life"]]],
     ["chron", "time", [["chronological", "arranged in time order"], ["synchronize", "make happen at the same time"]]],
     ["dict", "say", [["predict", "say what will happen before it does"], ["dictate", "say aloud for someone else to write"]]],
-    ["graph", "draw or record", [["photograph", "a picture recorded with light"], ["seismograph", "a device that records earthquakes"]]],
+    ["graph", "draw or record", [["autograph", "a person's own written name"], ["seismograph", "a device that records earthquakes"]]],
     ["port", "carry", [["portable", "easy to carry"], ["transport", "carry from one place to another"]]],
     ["spect", "look", [["inspect", "look at closely"], ["spectator", "a person who looks on at an event"]]],
     ["scrib", "write", [["scribble", "write quickly and carelessly"], ["inscribe", "write or carve words on a surface"]]],
@@ -65,7 +65,7 @@ window.ASVAB_EN_PARTS = {
     ["vid", "see", [["video", "recorded moving pictures you can see"], ["evident", "easy to see or understand"]]],
     ["terr", "land", [["territory", "an area of land"], ["terrain", "the surface features of the land"]]],
     ["aqua", "water", [["aquarium", "a water tank for fish"], ["aquatic", "living in water"]]],
-    ["therm", "heat", [["thermometer", "a tool that measures heat"], ["thermal", "relating to heat"]]],
+    ["therm", "heat", [["thermometer", "a tool that measures how hot something is"], ["thermal", "relating to heat"]]],
     ["phon", "sound", [["telephone", "a device that carries sound over a distance"], ["microphone", "a device that picks up sound"]]],
     ["tele", "far", [["telescope", "a tool for seeing faraway objects"], ["television", "a device for seeing pictures sent from far away"]]],
     ["micro", "small", [["microscope", "a tool for seeing very small things"], ["microchip", "a very small electronic circuit"]]],

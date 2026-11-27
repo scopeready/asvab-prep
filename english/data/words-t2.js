@@ -154,7 +154,7 @@ window.ASVAB_EN_T2 = [
   ["vigilant", "adj", "watchful", "Guards must stay vigilant all night, watching carefully for any sign of intruders."],
   ["vigor", "noun", "energy", "Even at eighty, Grandma gardens with great vigor, digging and planting for hours."],
   ["vindicate", "verb", "clear of blame", "The security video will vindicate the employee by showing that he did not take the money."],
-  ["volatile", "adj", "unstable", "Gasoline is volatile, so it must be stored carefully away from flames and sparks."],
+  ["volatile", "adj", "unstable", "The crowd's mood was volatile, calm one minute and angry the next, so the guards stayed ready."],
   ["vulnerable", "adj", "exposed to harm", "Without its shell, the turtle would be vulnerable to attacks from hungry predators."],
   ["wary", "adj", "cautious", "Wary of the icy sidewalk, Mia walked slowly and held on to the railing."],
   ["waver", "verb", "hesitate", "Once she decides to enlist, she does not waver; her mind stays made up."],

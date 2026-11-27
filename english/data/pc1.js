@@ -29,7 +29,7 @@ window.ASVAB_EN_PC1 = [
         why: ["Find the sentence that starts 'Making a can from recycled metal.'", "It says it 'uses about 95 percent less energy than making one from raw ore.'", "'Produces a weaker can' is the opposite of the passage, which says aluminum is recycled 'without losing its strength.'"] },
       { type: "inference", q: "The passage suggests that a single piece of aluminum", c: ["could be part of many different cans over time", "can be recycled only once or twice", "must be mixed with new ore to be reused", "loses its strength each time it is melted"], a: 0,
         why: ["Look for what the passage says about aluminum lasting.", "It 'does not wear out' and 'can be recycled over and over.' So the same metal could become can after can.", "'Only once or twice' and 'loses its strength' both say the opposite of the passage."] },
-      { type: "vocab", q: "As used in the passage, the word raw most nearly means", c: ["uncooked", "sore and painful", "in its natural, unprocessed state", "cold and wet, like a windy winter day"], a: 2,
+      { type: "vocab", q: "As used in the passage, the word raw most nearly means", c: ["uncooked", "sore and painful", "in its natural, unprocessed state", "cold and damp, as winter weather can be"], a: 2,
         why: ["Read the phrase: 'raw ore dug out of the ground.'", "Ore straight from the ground has not been processed into metal yet.", "'Uncooked' is the meaning for food, like raw vegetables, and does not fit rock."] },
       { type: "purpose", q: "The author's main purpose is to", c: ["explain why recycling aluminum is useful", "describe how ore is mined", "warn that cans are dangerous", "entertain readers with a story about a can"], a: 0,
         why: ["Ask what the author spends the passage doing.", "The author explains how cans are recycled and why it helps: it 'saves a great deal of energy.'", "Ore is mentioned only once, so 'describe how ore is mined' is too narrow."] }
@@ -157,7 +157,7 @@ window.ASVAB_EN_PC1 = [
         why: ["Look at what happens when sleep is skipped.", "'This sorting process is cut short, and much of what was studied may fade.'", "'Will remember more' is the belief the passage says 'can backfire,' so it is the trap."] },
       { type: "vocab", q: "As used in the passage, the word backfire most nearly means", c: ["produce the opposite of the intended result", "make a loud noise like an engine", "start a fire to stop a larger fire", "return to an earlier time"], a: 0,
         why: ["Read the sentence: students study late for better grades, but 'this habit can backfire.'", "The rest of the passage shows that losing sleep can hurt learning, the opposite of what they wanted.", "The engine noise and firefighting meanings are real, but they do not fit a study habit."] },
-      { type: "tone", q: "The author's tone in this passage is best described as", c: ["angry and blaming", "humorous and playfully lighthearted", "informative and gently cautionary", "uncertain and confused"], a: 2,
+      { type: "tone", q: "The author's tone in this passage is best described as", c: ["angry and blaming", "humorous and gently teasing throughout", "informative and gently cautionary", "uncertain and confused"], a: 2,
         why: ["Tone comes from how the author presents facts.", "The author explains research calmly and adds a mild warning that the habit 'can backfire.'", "The author never scolds students, so 'angry and blaming' is too strong."] }
     ]
   },

@@ -50,7 +50,7 @@ LESSONS.ohm = {
   hook: "Ohm's law is the most useful rule in electronics. It is one idea in three small forms, and the test asks for all three.",
   cards: [
     { t: 'More push, more flow',
-      say: 'Open a faucet wider and more water flows. A circuit works the same way. More volts push more amps through. More ohms hold the amps back.',
+      say: 'Raise the water pressure in a pipe and more water flows. A circuit works the same way. More volts push more amps through. More ohms hold the amps back.',
       fig: V.tbl([['Volts go up', 'Amps go up'], ['Ohms go up', 'Amps go down']], ['Change', 'Result']) },
     { t: "Ohm's law",
       say: "Ohm's law puts that idea into numbers. Volts equal amps times ohms. In letters it is V = I × R. V is voltage in volts. I is current in amps. R is resistance in ohms.",
@@ -180,7 +180,7 @@ LESSONS.acdc = {
   hook: 'A battery and a wall outlet give two different kinds of electricity. The test expects you to know both, and how to stay safe around them.',
   cards: [
     { t: 'DC: one direction',
-      say: 'Direct current, or DC, flows in one direction only. Batteries give DC. So do the things that run on them, like flashlights, phones and car electrical systems.',
+      say: 'Direct current, or DC, flows in one direction only. Batteries give DC. Things that run on batteries use DC, like flashlights, phones and car electrical systems.',
       fig: V.sym(['battery', 'lamp']) },
     { t: 'AC: back and forth',
       say: 'Alternating current, or AC, keeps reversing direction. It flows one way, then the other, over and over. Power plants make AC, and wall outlets deliver it.',

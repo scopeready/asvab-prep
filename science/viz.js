@@ -116,7 +116,9 @@ function balance(l, r) {
     + T(76, 79, l, { s: 17 }) + T(264, 79, r, { s: 17 }) + T(170, 38, '=', { s: 26 }) + T(170, 16, 'both sides weigh the same', { s: 12, w: 500 });
   return svg(340, 112, b, `balance scale: ${l} equals ${r}`);
 }
-const eq = (rows) => `<table class="eqs">${rows.map((r) => `<tr><td class="m">${r[0]}</td><td class="n">${r[1] || ''}</td></tr>`).join('')}</table>`;
+// Long left-hand lines (word formulas such as "amps = volts ÷ total ohms") are set a little smaller so the table still fits a phone screen.
+const eqLen = (h) => String(h).replace(/<span class="fr">.*?<\/span><\/span><\/span>/g, '00').replace(/<[^>]+>/g, '').length;
+const eq = (rows) => { const n = Math.max(...rows.map((r) => eqLen(r[0]))); return `<table class="eqs${n > 24 ? ' l2' : n > 19 ? ' l1' : ''}">${rows.map((r) => `<tr><td class="m">${r[0]}</td><td class="n">${r[1] || ''}</td></tr>`).join('')}</table>`; };
 const tbl = (rows, head) => `<table class="vt">${head ? `<tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>` : ''}${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
 
 // ---------- shapes (labels are text: pass '8 ft', '?', 'r = 5') ----------
@@ -233,8 +235,9 @@ function pulley(n = 1, o = {}) {
   const ly = n === 1 ? 120 : 138, pullX = n === 1 ? cx + 15 : (n % 2 ? cx + 52 : cx + 52);
   if (n === 1) { b += L(cx, top, cx, 38) + wheel(cx, 52) + L(cx - 15, 52, cx - 15, ly) + L(cx + 15, 52, cx + 15, 104) + arrow(cx + 15, 84, cx + 15, 112, OK); }
   else { const yb = 108; b += L(cx, top, cx, 34) + wheel(cx, 48) + wheel(cx, yb) + L(cx, yb + 15, cx, ly);
-    for (let k = 0; k < n; k++) { const x = cx - 15 + (n === 1 ? 0 : k * 30 / (n - 1)); b += L(x, 50, x, yb - 2, { c: BAD, w: 2 }); }
-    if (n % 2) { b += L(cx + 15, yb, pullX, yb - 20) + arrow(pullX, yb - 20, pullX, yb - 58, OK); } else { b += L(cx + 15, 48, pullX, 70) + arrow(pullX, 70, pullX, 112, OK); } }
+    const between = n % 2 ? n - 1 : n; // with an odd count, the strand you pull up on is one of the sections holding the load
+    for (let k = 0; k < between; k++) { const x = cx - 15 + (between === 1 ? 0 : k * 30 / (between - 1)); b += L(x, 50, x, yb - 2, { c: BAD, w: 2 }); }
+    if (n % 2) { b += L(cx + 15, yb, pullX, yb - 20, { c: BAD, w: 2 }) + arrow(pullX, yb - 20, pullX, yb - 58, OK); } else { b += L(cx + 15, 48, pullX, 70) + arrow(pullX, 70, pullX, 112, OK); } }
   b += `<rect x="${(n === 1 ? cx - 15 : cx) - 24}" y="${ly}" width="48" height="34" rx="4" fill="var(--card)" stroke="currentColor" stroke-width="2"/>` + T(n === 1 ? cx - 15 : cx, ly + 22, num(load), { s: 12.5, f: BAD });
   const eff = o.effort != null ? o.effort : (typeof load === 'number' ? +(load / n).toFixed(2) : '?');
   b += T(pullX + 12, n === 1 ? 100 : (n % 2 ? 72 : 96), 'pull ' + num(eff), { a: 'start', s: 13, f: OK }) + T(W / 2, ly + 56, `${n} rope section${n > 1 ? 's' : ''} hold${n > 1 ? '' : 's'} the load`, { s: 12, w: 500 });

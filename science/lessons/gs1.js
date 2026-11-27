@@ -38,7 +38,7 @@ LESSONS.life = {
         why: 'The groups get smaller as you go down the list. Kingdom is at the top. Species is at the bottom, with only one kind of living thing in it.' } },
     { t: 'Backbone or no backbone',
       say: 'Animals split into two big groups. <b>Vertebrates</b> have a backbone. <b>Invertebrates</b> do not. Mammals are vertebrates that have hair and feed their young milk.',
-      fig: V.tbl([['Vertebrates', 'backbone', 'fish, frogs, snakes'], ['', '', 'birds, mammals'], ['Invertebrates', 'no backbone', 'insects, spiders'], ['', '', 'worms, jellyfish']], ['group', 'has', 'examples']),
+      fig: V.tbl([['Vertebrates', 'fish, frogs, snakes,'], ['(backbone)', 'birds, mammals'], ['Invertebrates', 'insects, spiders,'], ['(no backbone)', 'worms, jellyfish']], ['group', 'examples']),
       ask: { q: 'Which of these animals is an invertebrate?', opts: ['A snake', 'A bird', 'A beetle', 'A dog'], a: 2,
         why: 'A beetle is an insect, and insects have no backbone. Snakes, birds and dogs all have backbones, so they are vertebrates.' } },
     { t: 'Remember',

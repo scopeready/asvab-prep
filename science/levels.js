@@ -39,8 +39,9 @@ function factCards(id) {
   const cards = facts.map((f) => { const cid = id + ':' + f[0]; by[cid] = f; return { id: cid, front: f[0], sub: 'term', back: f[1], ex: f[2] || '' }; });
   const cardQ = (cid) => {
     const f = by[cid] || pick(facts), others = shuffle(facts.filter((x) => x !== f));
-    if (Math.random() < 0.5) { const c = choices(cap(f[1]), others.slice(0, 3).map((x) => cap(x[1])));
-      return { q: `What does ${b(f[0])} mean?`, ...c, steps: [`${cap(f[0])}: ${f[1]}.${f[2] ? ' Example: ' + f[2] + '.' : ''}`, `Answer: ${b(cap(f[1]))}`] }; }
+    const how = /^to /.test(f[0]); // a "to find volts" card is a method, so it is only asked forwards
+    if (how || Math.random() < 0.5) { const c = choices(cap(f[1]), others.slice(0, 3).map((x) => cap(x[1])));
+      return { q: how ? `How do you ${b(f[0].slice(3))}?` : /^letter /.test(f[0]) ? `In a formula, what is the ${b(f[0])}?` : `What does ${b(f[0])} mean?`, ...c, steps: [`${cap(f[0])}: ${f[1]}.${f[2] ? ' Example: ' + f[2] + '.' : ''}`, `Answer: ${b(cap(f[1]))}`] }; }
     const c = choices(cap(f[0]), others.slice(0, 3).map((x) => cap(x[0])));
     return { q: `Which term means ${b('"' + f[1] + '"')}?`, ...c, steps: [`${cap(f[0])}: ${f[1]}.${f[2] ? ' Example: ' + f[2] + '.' : ''}`, `Answer: ${b(cap(f[0]))}`] };
   };
@@ -99,7 +100,7 @@ const GEN = {
       [Ld, Ld * k, E / 2, E + 10, Ld - E], 'pounds',
       ['A lever balances when effort × effort arm = load × load arm.', `Load side: ${Ld} × ${dl} = ${fmt(Ld * dl)}.`, `So effort × ${de} = ${fmt(Ld * dl)}. Divide: ${fmt(Ld * dl)} ÷ ${de}.`, `${fmt(Ld * dl)} ÷ ${de} = ${E}`], V.lever({ load: Ld, effort: '?', dl, de }), 'MC');
     return num(`On this lever the effort arm is ${de} feet and the load arm is ${dl} ${dl === 1 ? 'foot' : 'feet'}. What is the mechanical advantage?`, k, [de + dl, de * dl, de - dl, k + 1, k * 2].filter((x) => x !== k), '',
-      ['Mechanical advantage of a lever = effort arm ÷ load arm.', `Put in the numbers: ${de} ÷ ${dl}.`, `${de} ÷ ${dl} = ${k}`], V.lever({ load: 'load', effort: '?', dl, de }), 'MC');
+      ['Mechanical advantage of a lever = effort arm ÷ load arm.', `Put in the numbers: ${de} ÷ ${dl}.`, `${de} ÷ ${dl} = ${k}`], V.lever({ load: ' ', effort: ' ', dl, de }), 'MC');
   },
   pulley(d) {
     const t = rnd(0, 2);

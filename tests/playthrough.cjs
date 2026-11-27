@@ -13,8 +13,8 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   fs.readFile(f, (e, b) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream' }); res.end(b); }); });
 (async () => {
   await new Promise((r) => server.listen(0, r)); const base = `http://localhost:${server.address().port}/`;
-  const browser = await chromium.launch(), ctx = await browser.newContext({ viewport: { width, height: 800 }, acceptDownloads: true }), page = await ctx.newPage();
-  const errors = [], wide = new Set(), notes = []; let clicks = 0;
+  const browser = await chromium.launch(), ctx = await browser.newContext({ viewport: { width, height: 800 }, acceptDownloads: true }), page = await ctx.newPage(); global.PAGE = page;
+  const errors = [], wide = new Set(), notes = []; let clicks = 0; global.ERRORS = errors;
   page.on('pageerror', (e) => errors.push(String(e))); page.on('console', (m) => { if (m.type() === 'error' && !/favicon|sw\.js|Failed to load resource/.test(m.text())) errors.push(m.text()); });
   page.on('dialog', (d) => d.accept());
   const hash = () => page.evaluate(() => location.hash);
@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   const count = { lessonCards: 0, asks: 0, typedSteps: 0, guidedProblems: 0, flashcards: 0, practice: 0, checkQs: 0, hints: 0 };
 
   for (let li = 0; li < levels.length; li++) {
-    const L = levels[li];
+    const L = levels[li]; global.WHERE = L.id;
     // a level that is still locked must bounce back to the home screen
     if (li + 1 < levels.length) { await page.goto(base + '#/level/' + levels[li + 1].id); if ((await hash()) !== '#/home') fail(`locked level ${levels[li + 1].id} opened before ${L.id} was passed`); }
     await page.goto(base + '#/level/' + L.id); await page.waitForSelector('.stepcard'); await fit(`${L.id} level page`);
@@ -123,4 +123,8 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   if (wide.size) console.log('TOO WIDE FOR THE SCREEN:\n  ' + [...wide].slice(0, 40).join('\n  '));
   if (errors.length) console.log('SCRIPT ERRORS:\n  ' + [...new Set(errors)].slice(0, 20).join('\n  '));
   await browser.close(); server.close(); process.exit(errors.length || wide.size ? 1 : 0);
-})().catch((e) => { console.error('FAILED:', e.message); process.exit(1); });
+})().catch(async (e) => { console.error(`FAILED${global.WHERE ? ' at level ' + global.WHERE : ''}:`, e.message);
+  if ((global.ERRORS || []).length) console.error('  page errors:', global.ERRORS.slice(0, 5).join(' | '));
+  try { console.error('  state:', JSON.stringify(await global.PAGE.evaluate(() => { const s = window.ASVAB_APP.state(); return { pr: s.pr && { d: s.pr.d, run: s.pr.run, picked: s.pr.picked, answer: s.pr.q.answer, choices: s.pr.q.choices }, ck: s.ck && { i: s.ck.i, done: s.ck.done } }; }))); } catch (x) { /* no state */ }
+  try { console.error('  on screen:', await global.PAGE.evaluate(() => location.hash + ' | ' + document.querySelector('main').innerText.replace(/\s+/g, ' ').slice(0, 700))); } catch (x) { /* the page is gone */ }
+  process.exit(1); });

@@ -13,15 +13,16 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   fs.readFile(f, (e, b) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream' }); res.end(b); }); });
 (async () => {
   await new Promise((r) => server.listen(0, r)); const base = `http://localhost:${server.address().port}/`;
-  const browser = await chromium.launch(), ctx = await browser.newContext({ viewport: { width, height: 800 }, acceptDownloads: true }), page = await ctx.newPage();
-  const errors = [], wide = new Set(), notes = []; let clicks = 0;
+  const browser = await chromium.launch(), ctx = await browser.newContext({ viewport: { width, height: 800 }, acceptDownloads: true }), page = await ctx.newPage(); global.PAGE = page;
+  const errors = [], wide = new Set(), notes = []; let clicks = 0; global.ERRORS = errors;
   page.on('pageerror', (e) => errors.push(String(e))); page.on('console', (m) => { if (m.type() === 'error' && !/favicon|sw\.js|Failed to load resource/.test(m.text())) errors.push(m.text()); });
   page.on('dialog', (d) => d.accept());
   const hash = () => page.evaluate(() => location.hash);
   const st = () => page.evaluate(() => JSON.parse(JSON.stringify(window.ASVAB_APP.state(), (k, v) => (typeof v === 'function' ? undefined : v))));
   const fit = async (where) => { const over = await page.evaluate(() => { const w = document.documentElement.clientWidth; if (document.documentElement.scrollWidth > w + 1) return 'page scrolls sideways';
       for (const e of document.querySelectorAll('main *')) { const fg = e.closest('.figure'); if (fg && fg.scrollWidth <= fg.clientWidth + 1) continue; if (fg) return 'picture scrolls sideways'; const r = e.getBoundingClientRect(); if (r.width > 0 && r.right > w + 1) return e.tagName + '.' + e.className; } return ''; }); if (over) wide.add(`${where}: ${over}`); };
-  const click = async (sel) => { clicks++; await page.click(sel); };
+  const trail = global.TRAIL = []; // the last taps, shown if the run fails
+  const click = async (sel) => { clicks++; trail.push(sel); if (trail.length > 14) trail.shift(); await page.click(sel); };
   const typeNum = async (v) => { const s = String(Math.abs(v)); for (const ch of s) await click(`.key[data-k="${ch}"]`); if (v < 0) await click('.key[data-k="±"]'); await click('.key[data-k="ok"]'); };
   const fail = (m) => { throw new Error(m); };
 
@@ -30,8 +31,11 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   const guided = await page.evaluate(() => window.ASVAB.CFG.guided);
   const count = { lessonCards: 0, asks: 0, typedSteps: 0, guidedProblems: 0, flashcards: 0, practice: 0, checkQs: 0, hints: 0 };
 
-  for (let li = 0; li < levels.length; li++) {
-    const L = levels[li];
+  // START=<level id> skips ahead: every earlier level is marked passed first (for chasing a problem in one level)
+  const startAt = process.env.START ? levels.findIndex((l) => l.id === process.env.START) : 0;
+  if (startAt > 0) { await page.evaluate((ids) => { const k = window.ASVAB.CFG.key, d = JSON.parse(localStorage.getItem(k)), p = Object.values(d.profiles)[0]; for (const id of ids) p.levels[id] = { learned: true, gdone: true, practiced: 5, need: 5, passed: true, best: 1, attempts: 1, recent: [1, 1, 1] }; localStorage.setItem(k, JSON.stringify(d)); }, levels.slice(0, startAt).map((l) => l.id)); await page.reload(); }
+  for (let li = Math.max(0, startAt); li < levels.length; li++) {
+    const L = levels[li]; global.WHERE = L.id;
     // a level that is still locked must bounce back to the home screen
     if (li + 1 < levels.length) { await page.goto(base + '#/level/' + levels[li + 1].id); if ((await hash()) !== '#/home') fail(`locked level ${levels[li + 1].id} opened before ${L.id} was passed`); }
     await page.goto(base + '#/level/' + L.id); await page.waitForSelector('.stepcard'); await fit(`${L.id} level page`);
@@ -87,7 +91,7 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
       const S = (await st()).pr; if (S.picked == null) { await click(`.choice[data-i="${g === 1 ? (S.q.answer + 1) % 4 : S.q.answer}"]`); count.practice++; if (g === 1) await fit(`${L.id} practice missed`); }
       if (await page.$('[data-act=startcheck]')) break; await click('[data-act=nextq]'); }
     // ----- level check: fail it once on the first level to prove a fail does not unlock -----
-    if (li === 0) { await click('[data-act=startcheck]'); for (let g = 0; g < 20 && !(await st()).ck.done; g++) { const S = (await st()).ck; await click(`.choice[data-i="${g < 5 ? (S.qs[S.i].answer + 1) % 4 : S.qs[S.i].answer}"]`); await click('[data-act=checknext]'); }
+    if (li === 0 && startAt <= 0) { await click('[data-act=startcheck]'); for (let g = 0; g < 20 && !(await st()).ck.done; g++) { const S = (await st()).ck; await click(`.choice[data-i="${g < 5 ? (S.qs[S.i].answer + 1) % 4 : S.qs[S.i].answer}"]`); await click('[data-act=checknext]'); }
       if (await page.evaluate((id) => Object.values(JSON.parse(localStorage.getItem(window.ASVAB.CFG.key)).profiles)[0].levels[id].passed, L.id)) fail('a failed Level Check (5 of 10) passed the level');
       await fit(`${L.id} check failed`); await page.goto(base + '#/level/' + levels[1].id); if ((await hash()) !== '#/home') fail('next level opened after a failed check');
       await page.goto(base + '#/practice/' + L.id); for (let g = 0; g < 40; g++) { if (await page.$('[data-act=startcheck]')) break; const S = (await st()).pr; if (S.picked == null) await click(`.choice[data-i="${S.q.answer}"]`); if (await page.$('[data-act=startcheck]')) break; await click('[data-act=nextq]'); } }
@@ -123,4 +127,9 @@ const server = http.createServer((req, res) => { let f = path.join(dir, decodeUR
   if (wide.size) console.log('TOO WIDE FOR THE SCREEN:\n  ' + [...wide].slice(0, 40).join('\n  '));
   if (errors.length) console.log('SCRIPT ERRORS:\n  ' + [...new Set(errors)].slice(0, 20).join('\n  '));
   await browser.close(); server.close(); process.exit(errors.length || wide.size ? 1 : 0);
-})().catch((e) => { console.error('FAILED:', e.message); process.exit(1); });
+})().catch(async (e) => { console.error(`FAILED${global.WHERE ? ' at level ' + global.WHERE : ''}:`, e.message);
+  console.error('  last taps:', (global.TRAIL || []).join('  →  '));
+  if ((global.ERRORS || []).length) console.error('  page errors:', global.ERRORS.slice(0, 5).join(' | '));
+  try { console.error('  state:', JSON.stringify(await global.PAGE.evaluate(() => { const s = window.ASVAB_APP.state(); return { pr: s.pr && { d: s.pr.d, run: s.pr.run, picked: s.pr.picked, answer: s.pr.q.answer, choices: s.pr.q.choices }, ck: s.ck && { i: s.ck.i, done: s.ck.done } }; }))); } catch (x) { /* no state */ }
+  try { console.error('  on screen:', await global.PAGE.evaluate(() => location.hash + ' | ' + document.querySelector('main').innerText.replace(/\s+/g, ' ').slice(0, 700))); } catch (x) { /* the page is gone */ }
+  process.exit(1); });

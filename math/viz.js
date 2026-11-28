@@ -116,7 +116,9 @@ function balance(l, r) {
     + T(76, 79, l, { s: 17 }) + T(264, 79, r, { s: 17 }) + T(170, 38, '=', { s: 26 }) + T(170, 16, 'both sides weigh the same', { s: 12, w: 500 });
   return svg(340, 112, b, `balance scale: ${l} equals ${r}`);
 }
-const eq = (rows) => `<table class="eqs">${rows.map((r) => `<tr><td class="m">${r[0]}</td><td class="n">${r[1] || ''}</td></tr>`).join('')}</table>`;
+// Long left-hand lines (word formulas such as "amps = volts ÷ total ohms") are set a little smaller so the table still fits a phone screen.
+const eqLen = (h) => String(h).replace(/<span class="fr">.*?<\/span><\/span><\/span>/g, '00').replace(/<[^>]+>/g, '').length;
+const eq = (rows) => { const n = Math.max(...rows.map((r) => eqLen(r[0]))); return `<table class="eqs${n > 24 ? ' l2' : n > 19 ? ' l1' : ''}">${rows.map((r) => `<tr><td class="m">${r[0]}</td><td class="n">${r[1] || ''}</td></tr>`).join('')}</table>`; };
 const tbl = (rows, head) => `<table class="vt">${head ? `<tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>` : ''}${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
 
 // ---------- shapes (labels are text: pass '8 ft', '?', 'r = 5') ----------
@@ -147,5 +149,120 @@ function plane(o = {}) {
   return `<svg class="viz" viewBox="0 0 ${S + 14} ${S}" style="max-width:${S + 14}px" role="img" aria-label="coordinate plane"><defs><clipPath id="pc"><rect x="${m}" y="${m}" width="${S - 2 * m}" height="${S - 2 * m}"/></clipPath></defs><g>${b.replace('clip-path="inset(0)"', 'clip-path="url(#pc)"')}</g></svg>`;
 }
 
-root.V = { stack, longdiv, pv, nl, fbar, fbars, pie, dots, groups, grid100, pbar, balance, eq, tbl, rect, square, tri, rtri, circle, box, cyl, trap, para, ang, angsplit, triang, plane, fr };
+// ---------- science & mechanics pictures (ASVAB Science & Tech) ----------
+const box2 = (x, y, w, h, o = {}) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.r == null ? 8 : o.r}" fill="${o.f || SOFT}" stroke="${o.c || 'currentColor'}" stroke-width="${o.w || 1.5}"/>`;
+const arrow = (x1, y1, x2, y2, col = 'currentColor') => { const a = Math.atan2(y2 - y1, x2 - x1), p = (d, off) => `${(x2 - 9 * Math.cos(a) + off * Math.sin(a)).toFixed(1)} ${(y2 - 9 * Math.sin(a) - off * Math.cos(a)).toFixed(1)}`; return `<line x1="${x1}" y1="${y1}" x2="${(x2 - 6 * Math.cos(a)).toFixed(1)}" y2="${(y2 - 6 * Math.sin(a)).toFixed(1)}" stroke="${col}" stroke-width="2"/><path d="M${x2} ${y2} L${p(0, 5)} L${p(0, -5)} Z" fill="${col}"/>`; };
+// V.chain(['Grass', 'Rabbit', 'Fox']) → boxes joined by arrows: a food chain, a power path, a list of steps in order. Long or many labels stack downward.
+function chain(items, o = {}) {
+  const n = items.length, across = !o.down && n <= 4 && items.every((s) => String(s).length <= (n <= 3 ? 11 : 8));
+  if (across) { const W = 340, gap = 22, bw = (W - 8 - gap * (n - 1)) / n; let b = '';
+    items.forEach((s, i) => { const x = 4 + i * (bw + gap); b += box2(x, 12, bw, 42) + T(x + bw / 2, 38, s, { s: 13 }); if (i < n - 1) b += arrow(x + bw + 2, 33, x + bw + gap - 2, 33, GOLD); });
+    return svg(W, 66, b, o.label || items.join(', then ')); }
+  const W = 300, bh = 32, gap = 16; let b = '';
+  items.forEach((s, i) => { const y = 6 + i * (bh + gap); b += box2(20, y, W - 40, bh) + T(W / 2, y + 21, s, { s: 13 }); if (i < n - 1) b += arrow(W / 2, y + bh + 1, W / 2, y + bh + gap - 1, GOLD); });
+  return svg(W, n * (bh + gap) - gap + 12, b, o.label || items.join(', then '));
+}
+// V.cycle(['Intake', 'Compression', 'Power', 'Exhaust']) → 3 to 6 steps around a circle, clockwise from the top
+function cycle(items, o = {}) {
+  const n = items.length, W = 340, H = 232, cx = W / 2, cy = H / 2, R = 78; let b = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${LINE}" stroke-width="2"/>`;
+  const pos = (k) => { const a = -Math.PI / 2 + k * 2 * Math.PI / n; return [cx + R * Math.cos(a), cy + R * Math.sin(a), a]; };
+  for (let k = 0; k < n; k++) { const a = -Math.PI / 2 + (k + 0.5) * 2 * Math.PI / n, x = cx + R * Math.cos(a), y = cy + R * Math.sin(a); b += arrow(x - 8 * Math.cos(a + Math.PI / 2), y - 8 * Math.sin(a + Math.PI / 2), x + 5 * Math.cos(a + Math.PI / 2), y + 5 * Math.sin(a + Math.PI / 2), GOLD); }
+  items.forEach((s, k) => { const [x, y] = pos(k), w = Math.max(64, String(s).length * 7.4 + 16), bx = Math.max(2, Math.min(W - w - 2, x - w / 2)); b += box2(bx, y - 15, w, 30, { f: 'var(--card)' }) + T(bx + w / 2, y + 5, s, { s: 12.5 }); });
+  if (o.center) b += T(cx, cy + 5, o.center, { s: 12, w: 500 });
+  return svg(W, H, b, o.label || 'cycle: ' + items.join(', then '));
+}
+// V.layers([['Crust', 'thin solid rock'], ['Mantle', 'hot, slow-flowing rock']]) → bands stacked top to bottom, each with a name and a short note
+function layers(rows, o = {}) {
+  const W = 320, bh = 36; let b = '';
+  rows.forEach(([name, note], i) => { const y = 4 + i * bh; b += `<rect x="4" y="${y}" width="${W - 8}" height="${bh}" fill="${i % 2 ? 'var(--card)' : SOFT}" stroke="currentColor" stroke-width="1.5"/>` + T(14, y + 23, name, { a: 'start', s: 14, w: 700 }) + (note ? T(W - 14, y + 23, note, { a: 'end', s: 12, w: 500 }) : ''); });
+  return svg(W, rows.length * bh + 8, b, o.label || rows.map((r) => r.join(': ')).join('; '));
+}
+// electrical symbols drawn between (x,y) and (x+len,y)
+const SYM = {
+  resistor: (x, y) => `<path d="M${x} ${y} h8 l4 -8 l8 16 l8 -16 l8 16 l8 -16 l4 8 h8" fill="none" stroke="currentColor" stroke-width="2"/>`,
+  battery: (x, y) => L(x, y, x + 24, y) + L(x + 24, y - 13, x + 24, y + 13, { w: 2.5 }) + L(x + 32, y - 7, x + 32, y + 7, { w: 4 }) + L(x + 32, y, x + 56, y) + T(x + 18, y - 9, '+', { s: 13 }) + T(x + 39, y - 9, MINUS, { s: 13 }),
+  switch: (x, y) => L(x, y, x + 16, y) + `<circle cx="${x + 18}" cy="${y}" r="3" fill="currentColor"/><circle cx="${x + 40}" cy="${y}" r="3" fill="currentColor"/>` + L(x + 18, y, x + 38, y - 13) + L(x + 42, y, x + 56, y),
+  lamp: (x, y) => L(x, y, x + 16, y) + `<circle cx="${x + 28}" cy="${y}" r="12" fill="${SOFT}" stroke="currentColor" stroke-width="2"/>` + L(x + 20, y - 8, x + 36, y + 8, { w: 1.5 }) + L(x + 20, y + 8, x + 36, y - 8, { w: 1.5 }) + L(x + 40, y, x + 56, y),
+  fuse: (x, y) => L(x, y, x + 12, y) + `<rect x="${x + 12}" y="${y - 7}" width="32" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>` + L(x + 12, y, x + 44, y, { w: 1.5 }) + L(x + 44, y, x + 56, y),
+  capacitor: (x, y) => L(x, y, x + 24, y) + L(x + 24, y - 12, x + 24, y + 12, { w: 2.5 }) + L(x + 32, y - 12, x + 32, y + 12, { w: 2.5 }) + L(x + 32, y, x + 56, y),
+  diode: (x, y) => L(x, y, x + 20, y) + `<path d="M${x + 20} ${y - 10} v20 l16 -10 z" fill="currentColor"/>` + L(x + 36, y - 10, x + 36, y + 10, { w: 2.5 }) + L(x + 36, y, x + 56, y),
+  ground: (x, y) => L(x + 28, y - 12, x + 28, y) + L(x + 14, y, x + 42, y, { w: 2.5 }) + L(x + 19, y + 6, x + 37, y + 6, { w: 2.5 }) + L(x + 24, y + 12, x + 32, y + 12, { w: 2.5 }),
+};
+// V.sym('resistor') or V.sym(['battery', 'switch', 'lamp']) → schematic symbols with their names under them.
+// Names: resistor, battery, switch (drawn open), lamp, fuse, capacitor, diode, ground.
+function sym(names, o = {}) {
+  names = [].concat(names); const cw = 84, W = Math.max(120, names.length * cw); let b = '';
+  names.forEach((nm, i) => { const x = i * cw + (cw - 56) / 2 + (W - names.length * cw) / 2; b += (SYM[nm] || SYM.resistor)(x, 30) + T(x + 28, 66, nm, { s: 12.5 }); });
+  return svg(W, 76, b, o.label || 'schematic symbol: ' + names.join(', '));
+}
+// V.circuit('series' | 'parallel', { v: 12, r: [4, 2], total: true }) → a battery and its resistors, with volts and ohms labeled.
+// Values may be strings ('?'). total:true adds a line with the total resistance (numbers only).
+function circuit(kind, o = {}) {
+  const r = o.r || [4, 2], n = r.length, W = 340, par = kind === 'parallel', H = par ? 84 + n * 44 : 150, lx = 46, rx = 300, ty = 26; let b = '';
+  const lab = (v, u) => (typeof v === 'number' ? fmt(v) + ' ' + u : String(v));
+  const by = par ? ty + 22 + (n * 44) / 2 : 90;
+  b += L(lx, ty, lx, by - 14) + L(lx - 13, by - 14, lx + 13, by - 14, { w: 2.5 }) + L(lx - 7, by - 4, lx + 7, by - 4, { w: 4 }) + T(lx - 20, by - 16, '+', { s: 13 }) + T(lx + 30, by - 1, lab(o.v == null ? 12 : o.v, 'V'), { a: 'start', s: 13, f: BAD });
+  if (!par) { const bot = 124, seg = (rx - lx) / n; b += L(lx, by - 4, lx, bot) + L(lx, bot, rx, bot) + L(rx, bot, rx, ty);
+    r.forEach((v, i) => { const x = lx + i * seg + (seg - 56) / 2; b += L(lx + i * seg, ty, x, ty) + SYM.resistor(x, ty) + L(x + 56, ty, lx + (i + 1) * seg, ty) + T(x + 28, ty + 28, lab(v, 'Ω'), { s: 13, f: OK }); });
+    b += arrow(lx + 14, bot + 12, lx + 60, bot + 12, GOLD) + T(lx + 66, bot + 17, 'one path for the current', { a: 'start', s: 11.5, w: 500 });
+  } else { const x1 = 130, x2 = rx, bot = ty + n * 44 + 14; b += L(lx, ty, x2, ty) + L(lx, by - 4, lx, bot) + L(lx, bot, x2, bot);
+    r.forEach((v, i) => { const y = ty + 30 + i * 44; b += L(x1, y, x1 + 46, y) + SYM.resistor(x1 + 46, y) + L(x1 + 102, y, x2, y) + T(x1 + 24, y - 6, lab(v, 'Ω'), { s: 13, f: OK }); });
+    b += L(x1, ty, x1, ty + 30 + (n - 1) * 44) + L(x2, ty, x2, bot) + T(W / 2 + 20, bot + 20, n + ' paths for the current', { s: 11.5, w: 500 }); }
+  let cap = '';
+  if (o.total && r.every((v) => typeof v === 'number')) { const tot = par ? 1 / r.reduce((a, v) => a + 1 / v, 0) : r.reduce((a, v) => a + v, 0); cap = `<div class="vcap">Total resistance: ${fmt(+tot.toFixed(2))} Ω</div>`; }
+  return svg(W, H + (par ? 14 : 4), b, o.label || `${kind} circuit, ${lab(o.v == null ? 12 : o.v, 'volts')}, resistors ${r.join(' and ')} ohms`) + cap;
+}
+// V.lever({ cls: 1, load: 100, effort: '?', dl: 2, de: 4, unit: 'ft' }) → a lever with its fulcrum (▲), the load (weight) and the effort (your push), and both distances from the fulcrum.
+// cls 1: fulcrum between load and effort. cls 2: load in the middle (wheelbarrow). cls 3: effort in the middle (tweezers).
+function lever(o = {}) {
+  const cls = o.cls || 1, W = 340, y = 78, x0 = 30, x1 = 310, dl = +o.dl || 2, de = +o.de || 4, u = o.unit || 'ft', num = (v, s) => (typeof v === 'number' ? fmt(v) + ' ' + s : String(v)); let xf, xl, xe;
+  if (cls === 1) { xl = x0 + 14; xe = x1 - 14; xf = xl + (xe - xl) * dl / (dl + de); }
+  else if (cls === 2) { xf = x0 + 14; xe = x1 - 14; xl = xf + (xe - xf) * dl / de; }
+  else { xf = x0 + 14; xl = x1 - 14; xe = xf + (xl - xf) * de / dl; }
+  const up = cls !== 1; // on class 2 and 3 levers the effort pushes up
+  let b = `<rect x="${x0}" y="${y - 5}" width="${x1 - x0}" height="10" rx="3" fill="${SOFT}" stroke="currentColor" stroke-width="2"/><path d="M${xf} ${y + 5} l-14 24 h28 z" fill="${GOLD}" stroke="currentColor" stroke-width="1.5"/>` + T(xf, y + 44, 'fulcrum', { s: 11.5, w: 500 });
+  b += `<rect x="${xl - 17}" y="${y - 39}" width="34" height="34" rx="4" fill="var(--card)" stroke="currentColor" stroke-width="2"/>` + T(xl, y - 17, 'load', { s: 11 }) + T(xl, y - 46, num(o.load == null ? 100 : o.load, 'lb'), { s: 13, f: BAD });
+  b += up ? arrow(xe, y + 34, xe, y + 8, OK) + T(xe, y + 48, 'effort ' + num(o.effort == null ? '?' : o.effort, 'lb'), { s: 13, f: OK, a: xe > 250 ? 'end' : 'middle' })
+    : arrow(xe, y - 40, xe, y - 8, OK) + T(xe, y - 46, 'effort ' + num(o.effort == null ? '?' : o.effort, 'lb'), { s: 13, f: OK, a: xe > 250 ? 'end' : 'middle' });
+  const dim = (xa, xb, yy, txt) => L(xa, yy, xb, yy, { w: 1.5, d: 1 }) + L(xa, yy - 4, xa, yy + 4, { w: 1.5 }) + L(xb, yy - 4, xb, yy + 4, { w: 1.5 }) + T((xa + xb) / 2, yy + 15, txt, { s: 11.5, w: 500 });
+  b += dim(Math.min(xf, xl), Math.max(xf, xl), y + 62, `load arm ${num(o.dl == null ? dl : o.dl, u)}`) + dim(Math.min(xf, xe), Math.max(xf, xe), y + 86, `effort arm ${num(o.de == null ? de : o.de, u)}`);
+  return svg(W, 184, b, o.label || `class ${cls} lever: load ${o.load == null ? 100 : o.load} pounds at ${dl} ${u} from the fulcrum, effort at ${de} ${u}`);
+}
+// V.pulley(n, { load: 100 }) → n = how many rope sections hold up the load (1 = one fixed pulley, 2 = one movable pulley, 3 or 4 = block and tackle)
+function pulley(n = 1, o = {}) {
+  n = Math.max(1, Math.min(4, n)); const W = 340, cx = 150, top = 16, load = o.load == null ? 100 : o.load, num = (v) => (typeof v === 'number' ? fmt(v) + ' lb' : String(v)); let b = L(70, top, 250, top, { w: 4 });
+  const wheel = (x, y) => `<circle cx="${x}" cy="${y}" r="15" fill="${SOFT}" stroke="currentColor" stroke-width="2"/><circle cx="${x}" cy="${y}" r="3" fill="currentColor"/>`;
+  const ly = n === 1 ? 120 : 138, pullX = n === 1 ? cx + 15 : (n % 2 ? cx + 52 : cx + 52);
+  if (n === 1) { b += L(cx, top, cx, 38) + wheel(cx, 52) + L(cx - 15, 52, cx - 15, ly) + L(cx + 15, 52, cx + 15, 104) + arrow(cx + 15, 84, cx + 15, 112, OK); }
+  else { const yb = 108; b += L(cx, top, cx, 34) + wheel(cx, 48) + wheel(cx, yb) + L(cx, yb + 15, cx, ly);
+    const between = n % 2 ? n - 1 : n; // with an odd count, the strand you pull up on is one of the sections holding the load
+    for (let k = 0; k < between; k++) { const x = cx - 15 + (between === 1 ? 0 : k * 30 / (between - 1)); b += L(x, 50, x, yb - 2, { c: BAD, w: 2 }); }
+    if (n % 2) { b += L(cx + 15, yb, pullX, yb - 20, { c: BAD, w: 2 }) + arrow(pullX, yb - 20, pullX, yb - 58, OK); } else { b += L(cx + 15, 48, pullX, 70) + arrow(pullX, 70, pullX, 112, OK); } }
+  b += `<rect x="${(n === 1 ? cx - 15 : cx) - 24}" y="${ly}" width="48" height="34" rx="4" fill="var(--card)" stroke="currentColor" stroke-width="2"/>` + T(n === 1 ? cx - 15 : cx, ly + 22, num(load), { s: 12.5, f: BAD });
+  const eff = o.effort != null ? o.effort : (typeof load === 'number' ? +(load / n).toFixed(2) : '?');
+  b += T(pullX + 12, n === 1 ? 100 : (n % 2 ? 72 : 96), 'pull ' + num(eff), { a: 'start', s: 13, f: OK }) + T(W / 2, ly + 56, `${n} rope section${n > 1 ? 's' : ''} hold${n > 1 ? '' : 's'} the load`, { s: 12, w: 500 });
+  return svg(W, ly + 66, b, o.label || `pulley system with ${n} supporting rope section${n > 1 ? 's' : ''}, load ${load} pounds`);
+}
+// V.gears(12, 36, { rpm: 90 }) → two meshing gears with their tooth counts and arrows showing that they turn in opposite directions.
+// { arrows: false } hides the arrows, for a question that asks which way a gear turns.
+function gears(t1, t2, o = {}) {
+  const W = 340, mx = Math.max(t1, t2), r1 = 22 + 38 * t1 / mx, r2 = 22 + 38 * t2 / mx, tot = r1 + r2, x1 = (W - 2 * tot) / 2 + r1, x2 = x1 + tot, cy = 78;
+  const gear = (x, r, t, cw, name) => { const nt = Math.max(8, Math.min(22, Math.round(r / 3.4))); let teeth = ''; for (let k = 0; k < nt; k++) { const a = k * 2 * Math.PI / nt; teeth += `<line x1="${(x + (r - 4) * Math.cos(a)).toFixed(1)}" y1="${(cy + (r - 4) * Math.sin(a)).toFixed(1)}" x2="${(x + (r + 3) * Math.cos(a)).toFixed(1)}" y2="${(cy + (r + 3) * Math.sin(a)).toFixed(1)}" stroke="currentColor" stroke-width="3"/>`; }
+    const ar = r * 0.55, s = cw ? 1 : 0, p = (a) => `${(x + ar * Math.cos(a)).toFixed(1)} ${(cy + ar * Math.sin(a)).toFixed(1)}`, a0 = cw ? -2.4 : -0.74, a1 = cw ? -0.74 : -2.4, tip = [x + ar * Math.cos(a1), cy + ar * Math.sin(a1)], tx = cw ? -Math.sin(a1) : Math.sin(a1), ty = cw ? Math.cos(a1) : -Math.cos(a1);
+    return teeth + `<circle cx="${x}" cy="${cy}" r="${r - 3}" fill="${SOFT}" stroke="currentColor" stroke-width="2"/><circle cx="${x}" cy="${cy}" r="3.5" fill="currentColor"/>${o.arrows === false ? '' : `<path d="M${p(a0)} A${ar} ${ar} 0 0 ${s} ${p(a1)}" fill="none" stroke="${GOLD}" stroke-width="2.5"/><path d="M${(tip[0] + tx * 6).toFixed(1)} ${(tip[1] + ty * 6).toFixed(1)} L${(tip[0] - tx * 4 - ty * 6).toFixed(1)} ${(tip[1] - ty * 4 + tx * 6).toFixed(1)} L${(tip[0] - tx * 4 + ty * 6).toFixed(1)} ${(tip[1] - ty * 4 - tx * 6).toFixed(1)} Z" fill="${GOLD}"/>`}` + T(x, cy + r + 20, `${name}: ${t} teeth`, { s: 12.5 }); };
+  let b = gear(x1, r1, t1, true, o.a || 'A') + gear(x2, r2, t2, false, o.b || 'B');
+  if (o.rpm != null) b += T(x1, cy + r1 + 36, `${fmt(o.rpm)} rpm`, { s: 12, f: OK }) + T(x2, cy + r2 + 36, o.rpm2 === false ? '? rpm' : `${fmt(+(o.rpm * t1 / t2).toFixed(2))} rpm`, { s: 12, f: OK });
+  return svg(W, cy + Math.max(r1, r2) + (o.rpm != null ? 44 : 28), b, o.label || `two meshing gears with ${t1} and ${t2} teeth`);
+}
+// V.incline(10, 2, { load: 200, unit: 'ft' }) → a ramp: its length along the slope and its height
+function incline(len, h, o = {}) {
+  const W = 340, u = o.unit || 'ft', x0 = 40, x1 = 300, yb = 120, ph = Math.max(34, Math.min(84, 220 * (+h || 2) / (+len || 10) * 1.6)), num = (v) => (typeof v === 'number' ? fmt(v) + ' ' + u : String(v));
+  const a = Math.atan2(ph, x1 - x0), mx = x0 + (x1 - x0) * 0.68, my = yb - ph * 0.68;
+  let b = `<path d="M${x0} ${yb} L${x1} ${yb} L${x1} ${yb - ph} Z" fill="${SOFT}" stroke="currentColor" stroke-width="2"/>` + T(x0 + 84, yb - ph * 0.32 - 30, 'ramp length ' + num(len), { s: 12.5 }) + T(x1 + 6, yb - ph / 2 + 4, num(h), { a: 'start', s: 12.5, f: BAD }) + T(x1 + 6, yb - ph / 2 + 18, 'high', { a: 'start', s: 11, w: 500 });
+  b += `<g transform="translate(${mx} ${my}) rotate(${(-a * 180 / Math.PI).toFixed(1)})"><rect x="-17" y="-25" width="34" height="24" rx="3" fill="var(--card)" stroke="currentColor" stroke-width="2"/></g>`;
+  if (o.load != null) b += T(W / 2, yb + 22, `load ${typeof o.load === 'number' ? fmt(o.load) + ' lb' : o.load}`, { s: 12.5, f: BAD });
+  return svg(W, yb + 30, b, o.label || `ramp ${len} ${u} long and ${h} ${u} high`);
+}
+
+root.V = { stack, longdiv, pv, nl, fbar, fbars, pie, dots, groups, grid100, pbar, balance, eq, tbl, rect, square, tri, rtri, circle, box, cyl, trap, para, ang, angsplit, triang, plane, fr, chain, cycle, layers, sym, circuit, lever, pulley, gears, incline };
 })(typeof window !== 'undefined' ? window : globalThis);

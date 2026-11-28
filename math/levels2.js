@@ -395,12 +395,12 @@ for (const u of UNITS) {
 
 const TESTS = {
   AR: { id: 'AR', name: 'Arithmetic Reasoning', short: 'AR', count: 15, minutes: 55, gens: [G.genPercent, G.genRatio, genWords, genAverage, genRate, genMoney, genWork, genMoney, genRate], unlockAfter: 'check3', about: 'Word problems. On the computer ASVAB this section is 15 scored questions in 55 minutes.' },
-  MK: { id: 'MK', name: 'Mathematics Knowledge', short: 'MK', count: 15, minutes: 31, gens: [G.genFactors, G.genFracMul, G.genExpo, genExpr, genEquation, genIneq, genExpRules, genPoly, genQuad, genAngles, genArea, genCircle, genPyth, genVolume, genCoord, genEquation, genArea], unlockAfter: 'check5', about: 'Algebra and geometry. On the computer ASVAB this section is about 16 questions in 20 minutes.' },
+  MK: { id: 'MK', name: 'Mathematics Knowledge', short: 'MK', count: 15, minutes: 31, gens: [G.genFactors, G.genFracMul, G.genExpo, genExpr, genEquation, genIneq, genExpRules, genPoly, genQuad, genAngles, genArea, genCircle, genPyth, genVolume, genCoord, genEquation, genArea], unlockAfter: 'check5', about: 'Algebra and geometry. On the computer ASVAB this section is 15 scored questions in 31 minutes.' },
 };
 
 const CFG = {
   app: 'ASVAB Math', key: 'asvabMath.v1', sections: { AR: 'Arithmetic Reasoning', MK: 'Mathematics Knowledge' }, guided: true, hasVideo: true,
-  otherApp: { name: 'ASVAB English', url: 'https://asvab-english.vercel.app' },
+  otherApps: [{ name: 'ASVAB English', url: 'https://asvab-english.vercel.app', note: 'Word Knowledge and Paragraph Comprehension: the other half of the AFQT.' }, { name: 'ASVAB Science & Tech', url: 'https://asvab-science.vercel.app', note: 'General Science, Electronics, Auto, Shop and Mechanical: the sections that decide which jobs you can get.' }],
   practiceHint: 'Work it out on paper first. You can\'t use a calculator on the ASVAB.',
   testRules: ['No calculator. Use scratch paper, like the real test.', 'Like the computer ASVAB, you can\'t go back to change an answer.'],
   passingHTML: `<p>The ASVAB score the military uses to decide if you can enlist is the <b>AFQT</b>. It is built from four sections: the two math sections here, <b>Arithmetic Reasoning</b> and <b>Mathematics Knowledge</b>, plus two English sections (Word Knowledge and Paragraph Comprehension, which count double).</p>

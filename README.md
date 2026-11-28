@@ -91,8 +91,11 @@ Eight math lessons (adding, subtracting, multiplying, dividing, order of operati
 # put one clip per scene in a folder, named <id>-<scene>.mp3 (add-1.mp3 … add-6.mp3), then:
 node tools/video/build.cjs path/to/clips          # writes math/video/*.mp4, *.jpg and math/lessons/videos.js
 STILLS=out node tools/video/build.cjs -           # preview every scene as a picture, with no narration needed
+node tools/video/clips.cjs ratio,equation,area    # the clips to record: file name and the line to speak (add a clips folder to list only the missing ones)
 node tools/sync.cjs v4
 ```
+
+**Waiting for narration:** the scripts and pictures for three more videos (`ratio`, `equation`, `area`) are in `tools/video/scripts.js`, but their voice clips are not recorded, so those videos are not in the app. They need 18 clips (about 2,000 characters; roughly 4 to 7 Higgsfield credits). To finish them: record the clips that `tools/video/clips.cjs` lists with the same voice as the first eight (Higgsfield `text2speech_v2`, preset voice "Fraser"), run `node tools/video/build.cjs <clips folder> ratio,equation,area`, then `node tools/sync.cjs` with the next cache version, run the tests, and publish.
 
 ## Not affiliated
 

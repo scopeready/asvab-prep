@@ -53,6 +53,10 @@ Run the commands in the README's "After any change" section. `tests/playthrough.
 
 Eight math lessons open with a one-minute narrated video (`math/video/`). The pictures are drawn by `shared/viz.js`; only the voice is generated, one clip per scene from the `say` lines in `tools/video/scripts.js`, then joined by `tools/video/build.cjs`. If a scene's `say` text changes, that clip must be regenerated; if only its picture changes, rebuilding is enough. The narration clips are not stored in this repository.
 
+The first eight were recorded in the owner's Higgsfield account, project "ASVAB Prep": model `text2speech_v2`, preset voice "Fraser" (voice id `6705e465-7b52-5915-a1d8-b1222885e01d`), normal speed (`build.cjs` slows them slightly). Keep that voice. Recording costs the owner's credits, so check the balance and the estimate first, and ask before spending.
+
+Three more videos (`ratio`, `equation`, `area`) have scripts and pictures but no clips yet, so they are not in the app. `node tools/video/clips.cjs ratio,equation,area` lists the 18 clips to record (file name and line). Then `node tools/video/build.cjs <clips folder> ratio,equation,area`, sync with the next cache version, test, and publish when the owner asks.
+
 ## Not affiliated
 
 A study tool. Not affiliated with or endorsed by the U.S. Department of Defense or any branch of the military. The readiness score is an estimate, not an official ASVAB or AFQT score. Keep that statement in both apps.
